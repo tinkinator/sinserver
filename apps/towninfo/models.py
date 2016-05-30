@@ -18,13 +18,8 @@ class Town(models.Model):
 class Town_history(models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE)
     founded_on = models.DateTimeField()
-    registered_at = models.DateTimeField()
-    relocated_at = models.DateTimeField()
-    changed_alliance_at = models.DateTimeField()
-    renamed_at = models.DateTimeField()
-    abandoned_at = models.DateTimeField()
-    destroyed_at = models.DateTimeField()
-    disappeared_at = models.DateTimeField()
+    change_type = models.CharField(max_length = 50)
+    change_date = models.DateTimeField()
     previous_status = models.CharField(max_length = 50)
     current_status = models.CharField(max_length = 50)
     
