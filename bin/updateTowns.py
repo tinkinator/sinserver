@@ -62,6 +62,7 @@ def get_town_variables(filename):
 def save_inDB(thetown):
     DFORMAT1 = "%Y-%m-%d"
     DFORMAT2 = "%Y-%m-%dT%H:%M:%S.%f"
+    DFORMAT3 = "%Y-%m-%dT%H:%M:%S"
     changeDate = datetime.datetime.fromtimestamp(time.mktime(time.strptime(thetown['data_gen_date'], DFORMAT1)))
     try:
         town = Town.objects.get(townid=thetown['townid'])
@@ -83,10 +84,13 @@ def save_inDB(thetown):
             mapY = thetown['mapy'],
             player = player
         )
-
+        if len(thetown['founded_on']) == 19:
+            format = DFORMAT3
+        else:
+            format = DFORMAT2
         newhist = town.town_history_set.create(
             town = town,
-            founded_on = time.strptime(thetown['founded_on'], DFORMAT2),
+            founded_on = datetime.datetime.fromtimestamp(time.mktime(time.strptime(thetown['founded_on'], format))),
             change_type = "new", 
             change_date = changeDate
         )
@@ -109,7 +113,6 @@ def save_inDB(thetown):
             change_date = changeDate,
             previous_status = str(town.mapX) + " ; " + str(town.mapY),
             current_status = str(thetown['mapx']) + " ; " + str(thetown['mapy'])  
-            
         )
         town.mapX = thetown['mapx']
         town.mapY = thetown['mapy']
