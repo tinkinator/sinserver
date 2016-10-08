@@ -1,0 +1,41 @@
+<table class="mytable table">
+        <thead>
+            <td>Player</td>
+            <td>City</td>
+            <td>Troop type</td>
+            <td>Speed</td>
+            <td>Distance to Target</td>
+            <td>Travel Time, h</td>
+            <td>Offset</td>
+            <td>Square</td>
+            <td>Orders</td>
+            <td>Launch Time</td>
+            <td>Action</td>
+        </thead>
+        {% for army in armies %}
+        <tr id="{{army.id}}">
+            <td>{{army.player}}</td>
+            <td>{{army.city}}</td>
+            <td>{{army.troop_type}}</td>
+            <td>{{army.speed}}</td>
+            <td>{{army.dist}}</td>
+            <td>{{army.time}}</td>
+            <td><input id="offset" type="text" placeholder="hh:mm:ss/-hh:mm:ss"></td>
+            <td>
+                <select id="square" name="square">
+                    {% for square in squares %}
+                    <option value="{{square}}">{{square}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td >
+                <select id="orders" name="orders">
+                {% for order in orders %}
+                <option value="{{order}}">{{order}}</option>
+                {% endfor %}
+            </td>
+            <td>Launch Time</td>
+            <td><button class="btn btn-success" id="addSiege{{army.id}}">Add</button></td>
+        </tr>
+        {% endfor %}
+    </table>

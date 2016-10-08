@@ -1,0 +1,90 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+{% load staticfiles %}
+    <h1>Siege Plan</h1>
+    <table class="mytable table">
+        <thead>
+            <td>Player</td>
+            <td>City</td>
+            <td>X</td>
+            <td>Y</td>
+            <td>Squares</td>
+            <td>Landing time</td>
+            <td>Actions</td>
+        </thead>
+        <tr>
+            <td>{{siege.target_player}}</td>
+            <td>{{siege.target_city}}</td>
+            <td>{{siege.x_coord}}</td>
+            <td>{{siege.y_coord}}</td>
+            <td>
+                {%if siege.N%}N {%endif%}
+                {%if siege.NE%}NE {%endif%}
+                {%if siege.E%}E {%endif%}
+                {%if siege.SE%}SE {%endif%}
+                {%if siege.S%}S {%endif%}
+                {%if siege.SW%}SW {%endif%}
+                {%if siege.W%}W {%endif%}
+                {%if siege.NW%}N {%endif%}
+            </td>
+            <td>{{siege.landing_time}}</td>
+            <td>
+                <button class="btn">Edit</button>
+                <button class="btn">Delete</button>
+                <button class="btn">View Schedule</button>
+            </td>
+        </tr>
+    </table>
+    <h3>Assign Armies</h3>
+    <span>Filter by:</span>
+    <input id="playerfilter" type="text" placeholder="player">
+    <input id="troopfilter" type="text" placeholder="troop type">
+    <table class="mytable table">
+        <thead>
+            <td>Player</td>
+            <td>City</td>
+            <td>Troop type</td>
+            <td>Speed</td>
+            <td>Distance to Target</td>
+            <td>Travel Time, h</td>
+            <td>Offset</td>
+            <td>Square</td>
+            <td>Orders</td>
+            <td>Launch Time</td>
+            <td>Action</td>
+        </thead>
+        {% for army in armies %}
+        <tr id="{{army.id}}">
+            <td>{{army.player}}</td>
+            <td>{{army.city}}</td>
+            <td>{{army.troop_type}}</td>
+            <td>{{army.speed}}</td>
+            <td>{{army.dist}}</td>
+            <td>{{army.time}}</td>
+            <td><input id="offset" type="text" placeholder="hh:mm:ss/-hh:mm:ss"></td>
+            <td>
+                <select id="square" name="square">
+                    {% for square in squares %}
+                    <option value="{{square}}">{{square}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td >
+                <select id="orders" name="orders">
+                {% for order in orders %}
+                <option value="{{order}}">{{order}}</option>
+                {% endfor %}
+            </td>
+            <td>Launch Time</td>
+            <td><button class="btn btn-success addsiege" id="addSiege{{army.id}}">Add</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h3>Armies in Siege</h3>
+    <span>Filter by:</span>
+    <input id="playerfilter" type="text" placeholder="player">
+    <input id="troopfilter" type="text" placeholder="troop type">
+    <input id="squarefilter" type="text" placeholder="square">
+    <script src="{% static 'siege/js/siege.js'%}"></script>
+    {% endblock %}
+    

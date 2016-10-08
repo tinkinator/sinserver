@@ -1,3 +1,6 @@
+from django.conf.urls import url, include
+from django.contrib import admin
+
 """sinserver URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,5 +20,8 @@ from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^', include('apps.logreg.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^siege/', include('apps.siege.urls'),
+    )
 ]

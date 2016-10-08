@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <title>SIN Server</title>
+        {% load staticfiles %}
+     <link rel="stylesheet" type="text/css" href="{% static 'logreg/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'logreg/css/styles.css' %}">
+  </head>
+  <body style="background-color:black">
+    <div id="img-bg"><img id="bg" src="{% static 'logreg/img/sin_alchemy.jpg'%}"></div>
+    <div class="container">
+    <div style="text-align:center">
+        <h1 style="color:#C1C1C1">SIN Server</h1>
+        <img src="{% static 'logreg/img/militia.jpg'%}" style="border-radius:100%; height:100px; width:auto">
+    </div>
+        <div id="wrapper-center">
+            <h3 style="color:#C1C1C1; padding:0; margin-top:5px">Identify yourself</h3>
+                <form class="login-form" action="{% url 'login' %}" method='POST'>{% csrf_token %}
+                <p style="color:#C1C1C1;font-size:0.7em">Username</p>
+                <input class="form-controls login-input"type='text' name='username'>
+                <p style="color:#C1C1C1; font-size:0.7em">Password</p>
+                <input class="form-controls login-input" type='text' name='password'>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                <div class="form-group">
+                    <input id="login-btn" class="btn btn-danger" type='submit' value='ENTER'>
+                </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

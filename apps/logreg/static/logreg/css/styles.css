@@ -1,0 +1,104 @@
+/*Global*/
+
+label{
+    font-size: 0.6em;
+}
+
+body{
+    background-color: #E8DAC6;
+}
+
+.container{
+    width: 90%;
+    min-height: 280px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.errorlist{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+    .errorlist li{
+        font-size: 0.5em;
+        color: red;
+        margin: 0;
+    }
+
+.mynav{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.nav-ul{
+    list-style: none;
+    padding-left: 10px;
+    margin-bottom: 0;
+}
+    .nav-ul li{
+        display: inline;
+    }
+        .nav-ul li a{
+            color: black;
+        }
+        .nav-ul li a:hover{
+            color:white;
+            text-decoration: none;
+        }
+.error{
+    font-size: 0.5 em;
+    color: red;
+    margin: 0;
+}    
+
+/*Login page*/
+#img-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+#bg{
+  width: 1000px;
+}
+
+#wrapper-center{
+    width: 250px;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 2em;
+    text-align: center;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.login-input{
+    border-radius: 15px;
+    padding: 10px;
+    height: 1.5em;
+    width: 60%;
+    margin-bottom: 6px;
+}
+
+#login-btn{
+    width: 40%;
+}
+
+
+/*Siege page*/
+#id_target_player, #id_target_city, #id_x_coord, #id_y_coord, #siege-button {
+    display: block;
+}
+
+.wrapper-left{
+    width: 50%;
+    padding: 10px;
+    font-size: 2em;
+}
+
+/*Edit siege page*/
+.mytable{
+    background-color: rgba(255, 255, 255, 0.8);
+}

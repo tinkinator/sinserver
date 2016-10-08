@@ -1,0 +1,30 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+    <h1>Siege dashboard</h1>
+    <h3>Current Sieges</h3>
+    {% for siege in sieges %}
+    <div>
+        <span>Player: {{siege.target_player}}</span>
+        <span>City: {{siege.target_city}}</span>
+        <span>Squares:
+        {%if siege.N%}N {%endif%}
+        {%if siege.NE%}NE {%endif%}
+        {%if siege.E%}E {%endif%}
+        {%if siege.SE%}SE {%endif%}
+        {%if siege.S%}S {%endif%}
+        {%if siege.SW%}SW {%endif%}
+        {%if siege.W%}W {%endif%}
+        {%if siege.NW%}N {%endif%}
+        <span><a href="/siege/{{siege.id}}">Edit</a><span>
+        <span><a href="#">Delete</a></span>
+    </div>
+    {% endfor %}
+    <div class="wrapper-left">
+    <h3>New Siege</h3>
+    <form id="siege" action="{% url 'new' %}" method='POST'>{% csrf_token %}
+        {{ form }}
+        <button id="siege-button" button type="submit" class="btn btn-primary">Add Siege</button>
+    </form>
+    </div>
+    {% endblock %}
+    <script></script>
