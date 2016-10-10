@@ -97,6 +97,7 @@ class ArmyForm(ModelForm):
     class Meta:
         model = Army
         fields = (
+            'player',
             'city',
             'troop_type',
             'troop_count',

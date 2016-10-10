@@ -109,9 +109,22 @@ body{
 }
 
 /*armies page*/
-.army-label{
-    font-size: 1em;
+#armyForm label, #armyForm input, #armyForm select{
+    display: block;
 }
+
+#armyForm input, #armyForm select{
+    font-size: 0.6em;
+}
+
+#armyForm select{
+    margin-top: 0;
+}
+
+#armyForm div.error{
+    font-size: 0.6em;
+}
+
 .input-number{
     width: 3em;
 }

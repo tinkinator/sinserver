@@ -1,7 +1,8 @@
 {% extends "sinserver/base.html" %}
 {% block content %}
 {% load staticfiles %}
-<h1>My armies</h1>
+<script src="{% static 'siege/js/armies.js' %}"></script>
+<h1>{{player}}'s armies</h1>
 <table class="mytable table">
         <thead>
             <th>Player</th>
@@ -30,11 +31,12 @@
         </tr>
         {% endfor %}
     </table>
-    <form id="army" action="" method = 'POST'>{%csrf_token%}
-        <label class="army-label" for="id_city">City</label>
-        <select id="id_city" name="city">
+    <div class="wrapper-left">
+    <form id="armyForm" action="{% url 'newarmy' %}" method = 'POST'>{%csrf_token%}
+        <input type="hidden" name="player" value={{player_id}}>
+        <label class="army-label" for="id_city">City</label><select id="id_city" name="city">
             {% for c in cities %}
-            <option value="{{c}}">{{c}}</option>
+            <option value="{{c.id}}">{{c.name}}</option>
             {% endfor %}
         </select>
         <label class="army-label" for="id_troop_type">Troop type</label>
@@ -57,11 +59,11 @@
         <label class="army-label" for="id_troop_count">Troop count</label>
         <input class="input-big-number" id="id_troop_count" name="troop_count" type="number" value="0">
         <label class="army-label" for="id_speed">Speed</label>
-        <input class="input-number" id="id_speed" name="speed" step="0.001" type="number" value="0">
+        <input class="input-number" id="id_speed" name="speed" type="number" value="0">
         <label class="army-label" for="id_siege_engines">Siege engines</label>
         <input class="input-number" id="id_siege_engines" name="siege_engines" type="number" value="0">
         <label class="army-label" for="id_wall_engines">Wall engines</label>
-        <input class="input-number" id="id_wall_engines" name="wall_engines" type="number" value="0"><br>
+        <input class="input-number" id="id_wall_engines" name="wall_engines" type="number" value="0">
         <label class="army-label" for="id_elite_type">Elite type</label>
         <select id="id_elite_type" name="elite_type">
             <option value="" selected="selected">---------</option>
@@ -70,7 +72,8 @@
             <option value="BOW">Anti-Bow</option>
         </select>
         <label class="army-label" for="id_elite_divs_number">Elite divs number</label>
-        <input class="input-number" id="id_elite_divs_number" name="elite_divs_number" type="number"><br>
+        <input class="input-number" id="id_elite_divs_number" name="elite_divs_number" type="number" value="0">
     <button id="army-button" button type="submit" class="btn btn-primary">Add Army</button>
     </form>
+    </div>
 {% endblock %}

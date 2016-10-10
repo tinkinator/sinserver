@@ -5,7 +5,8 @@
         {% load staticfiles %}
      <link rel="stylesheet" type="text/css" href="{% static 'logreg/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{%static 'logreg/css/styles.css' %}">
-    <script src="{%static 'siege/js/jquery-3.1.0.min.js'%}"></script>
+    <script src="{% static 'siege/js/jquery-3.1.0.min.js'%}"></script>
+    <script src="{% static 'siege/js/jquery.validate.js' %}"></script>
   </head>
   <body>
     <div id="img-bg"><img id="bg" src="{% static 'logreg/img/sin_alchemy2.png'%}"></div>

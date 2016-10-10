@@ -91,8 +91,12 @@ def add_army(request, siege):
 def show_armies(request):
     context = {}
     player = request.user.username
+    context['player_id'] = request.user.id
     context['player'] = player
-    context['cities'] = City.objects.filter(player=request.user.player)
+    cities = [(lambda x: model_to_dict(x))(x) for x in City.objects.filter(player=request.user.player)]
+    print "Cities: {0}".format(cities)
+    cities_list = [{'name':x['name'], 'id':x['id']} for x in cities]
+    context['cities'] = cities_list
     armies = Army.objects.select_related('city').filter(player=request.user.player)
     context['armies'] = [(lambda x: model_to_dict(x))(x) for x in armies]
     for idx, army in enumerate(context['armies']):
@@ -101,6 +105,20 @@ def show_armies(request):
     print context
     return render(request, 'siege/armies.html', context)
 
+def create_army(request):
+    player = request.user.username
+    if request.method == "POST":
+        form = ArmyForm(request.POST)
+        if form.is_valid():
+            army = form.save(commit=False)
+            print "Army: {0}".format(army)
+            army.save()
+            return redirect('armies')
+        else:
+            print "Errors: {0}".format(form.errors)
+    else:
+        form = ArmyForm()
+    return render(request, 'siege/armies.html', {'form': form, 'player': player})
 
 
 def calc_dist(x1, y1, x2, y2):
