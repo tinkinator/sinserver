@@ -102,3 +102,20 @@ body{
 .mytable{
     background-color: rgba(255, 255, 255, 0.8);
 }
+
+.input-error{
+    border-color: red;
+    background-color: #f2dede;
+}
+
+/*armies page*/
+.army-label{
+    font-size: 1em;
+}
+.input-number{
+    width: 3em;
+}
+
+.input-big-number{
+    width: 5em;
+}

@@ -1,0 +1,76 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+{% load staticfiles %}
+<h1>My armies</h1>
+<table class="mytable table">
+        <thead>
+            <th>Player</th>
+            <th>City</th>
+            <th>Troop type</th>
+            <th>Speed</th>
+            <th>Troop number</th>
+            <th>Siege engines</th>
+            <th>Wall engines</th>
+            <th>Elites number</th>
+            <th>Elites type</th>
+            <th>Action</th>
+        </thead>
+        {% for army in armies %}
+        <tr id="{{army.id}}">
+            <td>{{player}}</td>
+            <td>{{army.city}}</td>
+            <td>{{army.troop_type}}</td>
+            <td>{{army.speed}}</td>
+            <td>{{army.troop_count}}</td>
+            <td>{{army.siege_engines}}</td>
+            <td>{{army.wall_engines}}</td>
+            <td>{{army.elite_divs_number}}</td>
+            <td>{{army.elite_type}}</td>
+            <td><button class="btn btn-success" id="edit{{army.id}}">Edit</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form id="army" action="" method = 'POST'>{%csrf_token%}
+        <label class="army-label" for="id_city">City</label>
+        <select id="id_city" name="city">
+            {% for c in cities %}
+            <option value="{{c}}">{{c}}</option>
+            {% endfor %}
+        </select>
+        <label class="army-label" for="id_troop_type">Troop type</label>
+        <select id="id_troop_type" name="troop_type">
+            <option value="" selected="selected">---------</option>
+            <option value="SP_T1">T1 Spears</option>
+            <option value="SP_T2">T2 Spears</option>
+            <option value="BOW_T1">T1 Bows</option>
+            <option value="BOW_T2">T2 Bows</option>
+            <option value="INF_T1">T1 Infantry</option>
+            <option value="INF_T2">T2 Infantry</option>
+            <option value="CAV_T1">T1 Cavalry</option>
+            <option value="CAV_T2">T2 Cavalry</option>
+            <option value="MIX_SP">Mixed spears</option>
+            <option value="MIX_BOW">Mixed bows</option>
+            <option value="MIX_INF">Mixed infantry</option>
+            <option value="MIX_CAV">Mixed cav</option>
+            <option value="MIX">Kitchen sink</option>
+        </select>
+        <label class="army-label" for="id_troop_count">Troop count</label>
+        <input class="input-big-number" id="id_troop_count" name="troop_count" type="number" value="0">
+        <label class="army-label" for="id_speed">Speed</label>
+        <input class="input-number" id="id_speed" name="speed" step="0.001" type="number" value="0">
+        <label class="army-label" for="id_siege_engines">Siege engines</label>
+        <input class="input-number" id="id_siege_engines" name="siege_engines" type="number" value="0">
+        <label class="army-label" for="id_wall_engines">Wall engines</label>
+        <input class="input-number" id="id_wall_engines" name="wall_engines" type="number" value="0"><br>
+        <label class="army-label" for="id_elite_type">Elite type</label>
+        <select id="id_elite_type" name="elite_type">
+            <option value="" selected="selected">---------</option>
+            <option value="CAV">Anti-Cavalry</option>
+            <option value="INF">Anti-Infantry</option>
+            <option value="BOW">Anti-Bow</option>
+        </select>
+        <label class="army-label" for="id_elite_divs_number">Elite divs number</label>
+        <input class="input-number" id="id_elite_divs_number" name="elite_divs_number" type="number"><br>
+    <button id="army-button" button type="submit" class="btn btn-primary">Add Army</button>
+    </form>
+{% endblock %}

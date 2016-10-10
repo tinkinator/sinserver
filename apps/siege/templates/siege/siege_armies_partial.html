@@ -1,0 +1,35 @@
+<table id="assigned" class="mytable table-paginated table table-bordered hover">
+    <thead>
+        <th>Player</th>
+        <th>City</th>
+        <th>Troop type</th>
+        <th>Speed</th>
+        <th>Distance to Target</th>
+        <th>Travel Time</th>
+        <th>Offset</th>
+        <th>Square</th>
+        <th>Orders</th>
+        <th>Launch Time</th>
+        <th>Action</th>
+    </thead>
+    {% for army in result %}
+    <tr id="{{army.id}}">
+        <td>{{army.player}}</td>
+        <td>{{army.city}}</td>
+        <td>{{army.troop_type}}</td>
+        <td>{{army.speed}}</td>
+        <td>{{army.dist}}</td>
+        <td>{{army.travel_time}}</td>
+        <td>{{army.time_offset}}</td>
+        <td>{{army.siege_square}}</td>
+        <td>{{army.orders}}</td>
+        <td class="timer">{{army.launch_time}}</td>
+        <td>Action</td>
+    </tr>
+    {% endfor %}
+</table>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var assignedTable = $('#ass').DataTable();
+    });
+</script>

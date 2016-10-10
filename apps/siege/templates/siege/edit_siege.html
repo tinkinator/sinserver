@@ -1,16 +1,21 @@
 {% extends "sinserver/base.html" %}
 {% block content %}
 {% load staticfiles %}
+    <script src="{% static 'siege/js/datatables.js' %}"></script>
+    <script src="{% static 'siege/js/siege.js' %}"></script>
+    {% load siege_tags %}
     <h1>Siege Plan</h1>
-    <table class="mytable table">
+    <table id="sieges" class="mytable table">
         <thead>
-            <td>Player</td>
-            <td>City</td>
-            <td>X</td>
-            <td>Y</td>
-            <td>Squares</td>
-            <td>Landing time</td>
-            <td>Actions</td>
+            <tr>
+                <th>Player</th>
+                <th>City</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Squares</th>
+                <th>Landing time</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tr>
             <td>{{siege.target_player}}</td>
@@ -36,23 +41,23 @@
         </tr>
     </table>
     <h3>Assign Armies</h3>
-    <span>Filter by:</span>
-    <input id="playerfilter" type="text" placeholder="player">
-    <input id="troopfilter" type="text" placeholder="troop type">
-    <table class="mytable table">
+    <table id="unassignedArmies" class="mytable table table-paginated table-bordered hover">
         <thead>
-            <td>Player</td>
-            <td>City</td>
-            <td>Troop type</td>
-            <td>Speed</td>
-            <td>Distance to Target</td>
-            <td>Travel Time, h</td>
-            <td>Offset</td>
-            <td>Square</td>
-            <td>Orders</td>
-            <td>Launch Time</td>
-            <td>Action</td>
+        <tr>
+            <th>Player</th>
+            <th>City</th>
+            <th>Troop type</th>
+            <th>Speed</th>
+            <th>Distance to Target</th>
+            <th>Travel Time, h</th>
+            <th>Offset</th>
+            <th>Square</th>
+            <th>Orders</th>
+            <th>Launch Time</th>
+            <th>Action</th>
+            </tr>
         </thead>
+        
         {% for army in armies %}
         <tr id="{{army.id}}">
             <td>{{army.player}}</td>
@@ -75,16 +80,13 @@
                 <option value="{{order}}">{{order}}</option>
                 {% endfor %}
             </td>
-            <td>Launch Time</td>
-            <td><button class="btn btn-success addsiege" id="addSiege{{army.id}}">Add</button></td>
+            <td class="timer">{{army.launch_time}}</td>
+            <td><button class="btn btn-success addsiege" id="addSiege-{{army.id}}">Add</button></td>
         </tr>
         {% endfor %}
     </table>
     <h3>Armies in Siege</h3>
     <span>Filter by:</span>
-    <input id="playerfilter" type="text" placeholder="player">
-    <input id="troopfilter" type="text" placeholder="troop type">
-    <input id="squarefilter" type="text" placeholder="square">
-    <script src="{% static 'siege/js/siege.js'%}"></script>
+    {% siege_armies_partial %}
     {% endblock %}
     

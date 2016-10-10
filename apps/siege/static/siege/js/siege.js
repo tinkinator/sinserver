@@ -1,9 +1,60 @@
 $(document).ready(function(){
-    /*Adding army row to the siege table*/    
-    $body.on(click, 'button.addsiege', function(event){
-        $this.
 
+    $('.table-paginated').DataTable();
+    /*Time offset regex*/ 
+    var offsetRegex = /-?[\d]{2,}:[0-5][0-9]:[0-5][0-9]/;
+    /*Adding army row to the siege table*/  
+    $(document.body).on('click', 'button.addsiege', function(event){
+        var id = sliceAfterDash($(this).attr('id'));
+        console.log("ID: ", id);
+        var error = false;
+        var payLoad = {};
+        var $headers = $(this).closest('table').find('th');
+        $('#'+id).find('td').each(function(idx){
+            if(idx == 6){
+                offsetVal = ($(this).find('input').val());
+                if (offsetVal == null){
+                    error = true;
+                console.log("Time offset is empty!");
+                $(this).find('input').addClass("input-error");    
+                }
+                else if (!offsetVal.match(offsetRegex) ){
+                    error = true;
+                    $(this).find('input').addClass("input-error");
+                    console.log("Wrong time format!");
+                }
+                else {
+                    if($(this).find('input').hasClass('error')){
+                        $(this).find('input').removeClass('input-error');
+                    }
+                    
+                    error = false;
+                    payLoad["Offset"] = offsetVal;
+                }
+            }
+            else if (idx == 7 || idx == 8){
+                payLoad[$($headers[idx]).text()] = $(this).find('select').val();
+            }
+            else{
+                payLoad[$($headers[idx]).text()] = $(this).text();   
+            }
+            payLoad["armyId"] = id;
+        });
+        console.log(payLoad);
+        
+        if(!error){
+        $.post(window.location.href+"/addarmy", payLoad, function(data, textStatus, xhr) {
+            console.log("success");
+            $('#'+id).remove();
+            return false;
+        });
+    }
     });
+
+    /*Helper function to parse ID with a dash*/ 
+    function sliceAfterDash(str){
+            return str.slice(str.lastIndexOf("-")+1);
+        }
 
     // This function gets cookie with a given name
     function getCookie(name) {

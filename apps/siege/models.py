@@ -42,6 +42,8 @@ class SiegeForm(ModelForm):
             'NW',
             )
 
+
+
 class City(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     name = models.CharField(max_length = 100)
@@ -90,6 +92,20 @@ class Army(models.Model):
         return str(self.player) + "-" + str(self.city) + "-" + str(self.troop_type) + "-" + str(self.troop_count)
     class Meta:
         db_table = 'armies'
+
+class ArmyForm(ModelForm):
+    class Meta:
+        model = Army
+        fields = (
+            'city',
+            'troop_type',
+            'troop_count',
+            'speed',
+            'siege_engines',
+            'wall_engines',
+            'elite_type',
+            'elite_divs_number',
+            )
 
 
 class Siege_army(models.Model):
