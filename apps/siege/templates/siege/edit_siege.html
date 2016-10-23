@@ -57,7 +57,7 @@
             <th>Action</th>
             </tr>
         </thead>
-        
+        <tbody>
         {% for army in armies %}
         <tr id="{{army.id}}">
             <td>{{army.player}}</td>
@@ -81,9 +81,11 @@
                 {% endfor %}
             </td>
             <td class="timer">{{army.launch_time}}</td>
-            <td><button class="btn btn-success addsiege" id="addSiege-{{army.id}}">Add</button></td>
+            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="glyphicon glyphicon-plus green" title="Add army"></span>
+            <span class="glyphicon glyphicon-dashboard green" title="Save speed"></span></td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
     <h3>Armies in Siege</h3>
     <span>Filter by:</span>

@@ -24,7 +24,11 @@
         <td>{{army.siege_square}}</td>
         <td>{{army.orders}}</td>
         <td class="timer">{{army.launch_time}}</td>
-        <td>Action</td>
+        <td>
+            <span id="editSiege-{{army.id}}" class="glyphicon glyphicon-edit green" title="Edit army"></span>
+            <span class="glyphicon glyphicon-dashboard green" title="Save speed"></span>
+            <span class="glyphicon glyphicon-hourglass green" title="Save offset"></span>
+            <span class="glyphicon glyphicon-minus red" title="Unassign army"</td>
     </tr>
     {% endfor %}
 </table>

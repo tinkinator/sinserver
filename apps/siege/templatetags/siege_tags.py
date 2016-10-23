@@ -24,7 +24,7 @@ def siege_armies_partial():
         speed = the_army.speed
         result[idx]['speed'] = speed
         result[idx]['troop_type'] = the_army.troop_type
-        result[idx]['dist'] = dist
+        result[idx]['dist'] = "%.3f" % (dist)
         travel_time = calc_time(speed, dist)
         result[idx]['travel_time'] = "%.3f" % (travel_time)
         launch_time = calc_launch_time(the_siege.landing_time, travel_time, result[idx]['time_offset'])

@@ -108,6 +108,22 @@ body{
     background-color: #f2dede;
 }
 
+.green{
+    color: #257F29;
+    font-size: 2em;
+}
+.green:hover{
+    color: #C6C0C6;
+}
+
+.red{
+    color: #A4231B;
+}
+.red:hover{
+    color: #C6C0C6;
+}
+
+
 /*armies page*/
 #armyForm label, #armyForm input, #armyForm select{
     display: block;

@@ -54,7 +54,7 @@ def edit_siege(request, siege):
         army['city'] = city.name
         army['player'] = Player.objects.get(id=army['player_id']).__str__()
         distance = calc_dist(city.x_coord, city.y_coord, the_siege['x_coord'], the_siege['y_coord'])
-        army['dist'] = distance
+        army['dist'] = "%.3f" % (distance)
         travel_time = calc_time(army['speed'], distance)
         army['time'] = "%.3f" % (travel_time)
         launch_time = calc_launch_time(the_siege['landing_time'], travel_time)
