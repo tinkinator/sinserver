@@ -19,6 +19,7 @@ class Siege(models.Model):
     SW = models.BooleanField(default=False)
     W = models.BooleanField(default=False)
     NW = models.BooleanField(default=False)
+    DIR = models.BooleanField(default=True)
     def __str__(self):
         return str(self.target_player) + "-- " + str(self.target_city)
     class Meta:
@@ -132,7 +133,7 @@ class Siege_army(models.Model):
     siege_id = models.ForeignKey(Siege)
     army_id = models.ForeignKey(Army)
     siege_square = models.CharField(max_length = 3, choices=SQUARES)
-    time_offset = models.DurationField()
+    time_offset = models.IntegerField(default=0)
     orders = models.CharField(choices=ORDERS, max_length = 30, default='occupy')
     class Meta:
         db_table = 'siege_armies'

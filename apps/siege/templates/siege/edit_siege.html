@@ -22,17 +22,16 @@
             <td>{{siege.target_city}}</td>
             <td>{{siege.x_coord}}</td>
             <td>{{siege.y_coord}}</td>
-            <td>
-                {%if siege.N%}N {%endif%}
-                {%if siege.NE%}NE {%endif%}
-                {%if siege.E%}E {%endif%}
-                {%if siege.SE%}SE {%endif%}
-                {%if siege.S%}S {%endif%}
-                {%if siege.SW%}SW {%endif%}
-                {%if siege.W%}W {%endif%}
-                {%if siege.NW%}N {%endif%}
-            </td>
-            <td>{{siege.landing_time}}</td>
+            <td>{%if siege.N%}N {%endif%}<!--
+                -->{%if siege.NE%}NE {%endif%}<!--
+                -->{%if siege.E%}E {%endif%}<!--
+                -->{%if siege.SE%}SE {%endif%}<!--
+                -->{%if siege.S%}S {%endif%}<!--
+                -->{%if siege.SW%}SW {%endif%}<!--
+                -->{%if siege.W%}W {%endif%}<!--
+                -->{%if siege.NW%}N{%endif%}<!--
+            --></td>
+            <td class="landing">{{siege.landing_time}}</td>
             <td>
                 <button class="btn">Edit</button>
                 <button class="btn">Delete</button>
@@ -41,19 +40,20 @@
         </tr>
     </table>
     <h3>Assign Armies</h3>
-    <table id="unassignedArmies" class="mytable table table-paginated table-bordered hover">
+    <table id="unassignedArmies" class="mytable table table-paginated table-bordered siegetable">
         <thead>
         <tr>
             <th>Player</th>
             <th>City</th>
             <th>Troop type</th>
+            <th>Count</th>
             <th>Speed</th>
-            <th>Distance to Target</th>
-            <th>Travel Time, h</th>
+            <th>Distance</th>
+            <th>ETA, h</th>
             <th>Offset</th>
             <th>Square</th>
             <th>Orders</th>
-            <th>Launch Time</th>
+            <th>Launch Time, UTC</th>
             <th>Action</th>
             </tr>
         </thead>
@@ -63,10 +63,14 @@
             <td>{{army.player}}</td>
             <td>{{army.city}}</td>
             <td>{{army.troop_type}}</td>
-            <td>{{army.speed}}</td>
-            <td>{{army.dist}}</td>
-            <td>{{army.time}}</td>
-            <td><input id="offset" type="text" placeholder="hh:mm:ss/-hh:mm:ss"></td>
+            <td>{{army.troop_count}}</td>
+            <td class="speed">
+                <p>{{army.speed}}</p>
+                <input type='number' class='speedInput' hidden="true">
+            </td>
+            <td class="dist">{{army.dist}}</td>
+            <td class="eta">{{army.time}}</td>
+            <td class="offset"><input class="offsetInput" type="text" placeholder="hh:mm:ss/-hh:mm:ss"></td>
             <td>
                 <select id="square" name="square">
                     {% for square in squares %}
@@ -81,14 +85,13 @@
                 {% endfor %}
             </td>
             <td class="timer">{{army.launch_time}}</td>
-            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="glyphicon glyphicon-plus green" title="Add army"></span>
-            <span class="glyphicon glyphicon-dashboard green" title="Save speed"></span></td>
+            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="addsiege glyphicon glyphicon-plus orange" title="Add army"></span>
+            <span class="glyphicon glyphicon-ok green saveArmy" title="Save army"></span></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
     <h3>Armies in Siege</h3>
-    <span>Filter by:</span>
     {% siege_armies_partial %}
     {% endblock %}
     

@@ -2,23 +2,37 @@
 {% block content %}
     <h1>Siege dashboard</h1>
     <h3>Current Sieges</h3>
-    {% for siege in sieges %}
-    <div>
-        <span>Player: {{siege.target_player}}</span>
-        <span>City: {{siege.target_city}}</span>
-        <span>Squares:
-        {%if siege.N%}N {%endif%}
-        {%if siege.NE%}NE {%endif%}
-        {%if siege.E%}E {%endif%}
-        {%if siege.SE%}SE {%endif%}
-        {%if siege.S%}S {%endif%}
-        {%if siege.SW%}SW {%endif%}
-        {%if siege.W%}W {%endif%}
-        {%if siege.NW%}N {%endif%}
-        <span><a href="/siege/{{siege.id}}">Edit</a><span>
-        <span><a href="#">Delete</a></span>
-    </div>
-    {% endfor %}
+    <table class="mytable table">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>City</th>
+                <th>Squares</th>
+                <th>Landing Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+            {% for siege in sieges %}
+                <tr>
+                    <td>{{siege.target_player}}</td>
+                    <td>{{siege.target_city}}</td>
+                    <td>{%if siege.N%}N {%endif%}<!--
+                    -->{%if siege.NE%}NE {%endif%}<!--
+                    -->{%if siege.E%}E {%endif%}<!--
+                    -->{%if siege.SE%}SE {%endif%}<!--
+                    -->{%if siege.S%}S {%endif%}<!--
+                    -->{%if siege.SW%}SW {%endif%}<!--
+                    -->{%if siege.W%}W {%endif%}<!--
+                    -->{%if siege.NW%}N {%endif%}</td>
+                    <td>{{siege.landing_time}}</td>
+                    <td>
+                        <button class="btn btn-success"><a href="/siege/{{siege.id}}">Edit</a></button>
+                        <button class="btn btn-danger"><a href="#">Delete</a></button>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+
     <div class="wrapper-left">
     <h3>New Siege</h3>
     <form id="siege" action="{% url 'new' %}" method='POST'>{% csrf_token %}

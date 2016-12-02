@@ -1,5 +1,6 @@
 from __future__ import division
 import json
+import re
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -12,7 +13,9 @@ from django.forms.models import model_to_dict
 from math import sqrt
 from .models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm)
 
-date_format = "%d %b %H:%M:%S"
+date_format = "%m-%d-%Y %H:%M:%S"
+offset_regex = re.compile(r'(-?)(\d{2,}):([0-5][0-9]):([0-5][0-9])')
+
 
 @login_required(login_url='/', redirect_field_name=None)
 def manage(request):
@@ -21,6 +24,7 @@ def manage(request):
         'form': SiegeForm(label_suffix="")
         }
     return render(request, 'siege/manage.html', sieges)
+
 
 @login_required(login_url='/', redirect_field_name=None)
 def create_siege(request):
@@ -37,56 +41,74 @@ def create_siege(request):
         form = SiegeForm()
     return render(request, 'siege/manage.html', {'form': form})
 
+
 @login_required(login_url='/', redirect_field_name=None)
 def armies(request):
     armies = {
     }
     return render(request, 'siege/armies.html')
 
+
 @login_required(login_url='/', redirect_field_name=None)
 def edit_siege(request, siege):
-    # Takes the user to the edit siege page
-    inner_queryset = set(Siege_army.objects.all())
-    armies = Army.objects.filter(siege_army__isnull=True).values()
-    the_siege = model_to_dict(Siege.objects.get(id=siege))
-    for army in armies:
-        city = City.objects.get(id__in=Army.objects.filter(id=army['id']))
-        army['city'] = city.name
-        army['player'] = Player.objects.get(id=army['player_id']).__str__()
-        distance = calc_dist(city.x_coord, city.y_coord, the_siege['x_coord'], the_siege['y_coord'])
-        army['dist'] = "%.3f" % (distance)
-        travel_time = calc_time(army['speed'], distance)
-        army['time'] = "%.3f" % (travel_time)
-        launch_time = calc_launch_time(the_siege['landing_time'], travel_time)
-        army['launch_time'] = datetime.strftime(launch_time, date_format)
-        print "Launch time: {0}".format(launch_time)
-    squares = [k for (k,v) in the_siege.items() if (v == True and v != "id")]
-    context = {
-        'armies': armies,
-        'siege': the_siege, 
-        'siege_armies': inner_queryset,
-        'squares': squares,
-        'orders': [x[0] for x in Siege_army.ORDERS]
-    }
-    print "Number of queries made: {0}".format(len(db.connection.queries))
-    return render(request, 'siege/edit_siege.html', context)
+    if request.method == 'GET':
+        # Takes the user to the edit siege page
+        inner_queryset = set(Siege_army.objects.all())
+        armies = Army.objects.filter(siege_army__isnull=True).values()
+        the_siege = model_to_dict(Siege.objects.get(id=siege))
 
-def add_army(request, siege):
+        for army in armies:
+            city = City.objects.get(id__in=Army.objects.filter(id=army['id']))
+            army['city'] = city.name
+            army['player'] = Player.objects.get(id=army['player_id']).__str__()
+            distance = calc_dist(city.x_coord, city.y_coord, the_siege['x_coord'], the_siege['y_coord'])
+            army['dist'] = "%.3f" % (distance)
+            travel_time = calc_time(army['speed'], distance)
+            army['time'] = "%.3f" % (travel_time)
+            launch_time = calc_launch_time(the_siege['landing_time'], travel_time)
+            army['launch_time'] = datetime.strftime(launch_time, date_format)
+        squares = [k for (k,v) in the_siege.items() if (v == True and k != "id")]
+        the_siege['landing_time'] = datetime.strftime(the_siege['landing_time'], date_format)
+        context = {
+            'armies': armies,
+            'siege': the_siege,
+            'siege_armies': inner_queryset,
+            'squares': squares,
+            'orders': [x[0] for x in Siege_army.ORDERS]
+        }
+        print "Number of queries made: {0}".format(len(db.connection.queries))
+        return render(request, 'siege/edit_siege.html', context)
+
+
+def add_army_tosiege(request, siege):
     if request.method == 'GET':
         pass
     elif request.method == 'POST':
-        offset = request.POST["Offset"]
-        time = datetime.strptime(offset,"%H:%M:%S")
-        time_offset = timedelta(hours=time.hour, minutes=time.minute, seconds=time.second)
+        offset = offset_fromstring(request.POST["Offset"])
         if request.POST["Square"] == "id":
             square = "DIR"
         else:
             square = request.POST["Square"]
         the_siege = Siege.objects.get(id=int(siege))
         the_army = Army.objects.get(id=int(request.POST["armyId"]))
-        newSiegeArmy = Siege_army(siege_id=the_siege, army_id=the_army, siege_square=square, time_offset=time_offset, orders=request.POST["Orders"])
-        newSiegeArmy.save();
+        newSiegeArmy = Siege_army(siege_id=the_siege, army_id=the_army, siege_square=square, time_offset=offset, orders=request.POST["Orders"])
+        newSiegeArmy.save()
         return HttpResponse("Mkay!")
+
+    
+def update_siegearmy(request, siege, army):
+    if request.method == 'PUT':
+        print "%%%%%%%%%%%%%%%%%%%%"
+        body = json.loads(request.body.decode('utf-8'))
+        siege_army = Siege_army.objects.get(id=int(army))
+        offset = offset_fromstring(body['offset'])
+        print "Siege army changes: %s, offset: %s" % (body, offset)
+        siege_army.time_offset = offset
+        siege_army.siege_square = body['siege_square']
+        siege_army.orders = body['orders']
+        siege_army.save()
+        return HttpResponse("Mkay!")
+
 
 def show_armies(request):
     context = {}
@@ -105,6 +127,7 @@ def show_armies(request):
     print context
     return render(request, 'siege/armies.html', context)
 
+
 def create_army(request):
     player = request.user.username
     if request.method == "POST":
@@ -121,19 +144,49 @@ def create_army(request):
     return render(request, 'siege/armies.html', {'form': form, 'player': player})
 
 
+def save_army(request, army):
+    if request.method == "POST":
+        print "$$$$$$$$$$$$$$$$$$ %s" % army
+        speed = float(request.POST["speed"])
+        thearmy = Army.objects.get(id=int(army))
+        print thearmy
+        thearmy.speed = speed
+        thearmy.save()
+        return HttpResponse("success")
+    else:
+        return HttpResponse("huh?")
+
+
 def calc_dist(x1, y1, x2, y2):
     return sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
 
 def calc_time(speed, distance):
     hours = float(distance) / float(speed)
     return hours
-    
+
+def offset_fromstring(offset_string):
+    offset = re.match(offset_regex, offset_string)
+    offset_seconds = int(
+        offset.group(2)) * 3600 \
+                     + int(offset.group(3)) * 60 \
+                     + int(offset.group(4))
+    if offset.group(1):
+        offset_seconds = -offset_seconds
+    return offset_seconds
 
 def calc_launch_time(landing_time, offset1, offset2=None):
     delta = timedelta(hours = offset1)
     if offset2 is not None:
-        delta += offset2
+        delta2 = timedelta(seconds = offset2)
+        if offset2 < 0:
+            delta -= delta2
+            print "%%%%%%%%%%%%%%%%%%%Calculating time delta:"
+            print delta
+        else:
+            return landing_time - delta + delta2
     return landing_time - delta
+
 
 def calculate_target_coord(square, x, y):
     if square == "N":

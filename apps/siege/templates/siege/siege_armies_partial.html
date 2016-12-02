@@ -1,34 +1,40 @@
-<table id="assigned" class="mytable table-paginated table table-bordered hover">
+<table id="assigned" class="mytable table-paginated table table-bordered siegetable">
     <thead>
         <th>Player</th>
         <th>City</th>
         <th>Troop type</th>
+        <th>Count</th>
         <th>Speed</th>
         <th>Distance to Target</th>
         <th>Travel Time</th>
         <th>Offset</th>
         <th>Square</th>
         <th>Orders</th>
-        <th>Launch Time</th>
+        <th>Launch Time, UTC</th>
         <th>Action</th>
     </thead>
     {% for army in result %}
-    <tr id="{{army.id}}">
+    <tr id="{{army.id}}" data="{{army.siegearmyId}}">
         <td>{{army.player}}</td>
         <td>{{army.city}}</td>
         <td>{{army.troop_type}}</td>
-        <td>{{army.speed}}</td>
-        <td>{{army.dist}}</td>
-        <td>{{army.travel_time}}</td>
-        <td>{{army.time_offset}}</td>
-        <td>{{army.siege_square}}</td>
-        <td>{{army.orders}}</td>
+        <td class="troop_count">{{army.troop_count}}</td>
+        <td class="speed"><p>{{army.speed}}</p>
+        <input type='number' class='speedInput' hidden="true">
+        </td>
+        <td class="dist">{{army.dist}}</td>
+        <td class="eta">{{army.travel_time}}</td>
+        <td class="offset"><p>{{army.time_offset}}</p><!--
+        --><input class="offsetInput" type="text" placeholder="hh:mm:ss/-hh:mm:ss" hidden="true"><!--
+        --></td>
+        <td class="square"><p>{{army.siege_square}}</p><!--
+        --><select class="squareSelect" hidden="true"></select></td>
+        <td class="orders"><p>{{army.orders}}</p><!--
+        --><select class="ordersSelect" hidden="true"></select></td>
         <td class="timer">{{army.launch_time}}</td>
         <td>
-            <span id="editSiege-{{army.id}}" class="glyphicon glyphicon-edit green" title="Edit army"></span>
-            <span class="glyphicon glyphicon-dashboard green" title="Save speed"></span>
-            <span class="glyphicon glyphicon-hourglass green" title="Save offset"></span>
-            <span class="glyphicon glyphicon-minus red" title="Unassign army"</td>
+            <span class="glyphicon glyphicon-ok green saveArmy" title="Save"></span><!--
+        --><span class="glyphicon glyphicon-remove removeArmy red" title="Unassign army"</td>
     </tr>
     {% endfor %}
 </table>

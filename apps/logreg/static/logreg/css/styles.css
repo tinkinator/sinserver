@@ -8,6 +8,14 @@ body{
     background-color: #E8DAC6;
 }
 
+button a{
+    color: ghostwhite;
+}
+    button a:hover{
+        color: ghostwhite;
+        text-decoration: none;
+    }
+
 .container{
     width: 90%;
     min-height: 280px;
@@ -103,6 +111,27 @@ body{
     background-color: rgba(255, 255, 255, 0.8);
 }
 
+    .mytable tbody tr:nth-child(odd){
+        background-color: rgba(225, 225, 225, 0.8);
+    }
+
+#assigned td, #unassignedArmies td{
+    padding-bottom: 3px;
+    line-height: 1.2;
+}
+
+#assigned th, #unassignedArmies th{
+    vertical-align: top;
+}
+
+td select{
+    width: 90%;
+}
+
+td input{
+    width: 90%;
+}
+
 .input-error{
     border-color: red;
     background-color: #f2dede;
@@ -116,13 +145,67 @@ body{
     color: #C6C0C6;
 }
 
+.orange{
+    color: #D8803C;
+    font-size: 2em;
+}
+
+.orange:hover{
+    color: #C6C0C6;
+}
+
 .red{
-    color: #A4231B;
+    color: #D85462;
+    font-size: 2em;
 }
 .red:hover{
     color: #C6C0C6;
 }
 
+span.glyphicon{
+    margin-right: 10px;
+}
+
+span.glyphicon:last-of-type{
+    margin-right: 0;
+}
+
+.dataTables_wrapper div.row:first-of-type{
+    font-size: 2em;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr {
+		display: block;
+        font-size: 1.1em;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	tr { border: 1px solid #ccc; }
+
+	td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+	}
+}
 
 /*armies page*/
 #armyForm label, #armyForm input, #armyForm select{
