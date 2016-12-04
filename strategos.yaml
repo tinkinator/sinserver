@@ -1,0 +1,50 @@
+# [START replication_controller]
+apiVersion: v1
+kind: Pod
+metadata:
+  name: strategos
+  labels:
+    app: strategos
+spec:
+  containers:
+    - name: strategos
+      image: gcr.io/strategos-151306/strategos:1.0.1
+      ports:
+        - containerPort: 8080
+          name: strategos
+      env:
+        - name: STATIC_URL
+          value: "http://storage.googleapis.com/strategos/static/"
+        - name: PORT
+          value: "8080"
+        - name: SQLITE_DATA_PATH
+          value: "/data"
+      volumeMounts:
+        - name: strategos-sqlite-data
+          mountPath: /data
+  volumes:
+    - name: strategos-sqlite-data
+      gcePersistentDisk:
+        pdName: strategos-sqlite
+        fsType: ext4
+
+# [END replication_controller]
+
+---
+
+# [START service]
+apiVersion: v1
+kind: Service
+metadata:
+  name: strategos
+  labels:
+    name: strategos
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: strategos
+# [END service]

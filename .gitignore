@@ -6,3 +6,5 @@ MANIFEST
 
 settings.py
 .idea
+deploy/
+allstatic
