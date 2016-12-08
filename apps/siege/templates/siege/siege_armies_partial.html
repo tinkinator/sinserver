@@ -13,28 +13,28 @@
         <th>Launch Time, UTC</th>
         <th>Action</th>
     </thead>
-    {% for army in result %}
-    <tr id="{{army.id}}" data="{{army.siegearmyId}}">
-        <td>{{army.player}}</td>
-        <td>{{army.city}}</td>
-        <td>{{army.troop_type}}</td>
-        <td class="troop_count">{{army.troop_count}}</td>
-        <td class="speed"><p>{{army.speed}}</p>
-        <input type='number' class='speedInput' hidden="true">
+    {% for r in mydict.result %}
+    <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
+        <td>{{r.player}}</td>
+        <td>{{r.city}}</td>
+        <td>{{r.troop_type}}</td>
+        <td class="troop_count">{{r.troop_count}}</td>
+        <td class="speed"><p>{{r.speed}}</p><!--
+        --><input type='number' class='speedInput' hidden="true">
         </td>
-        <td class="dist">{{army.dist}}</td>
-        <td class="eta">{{army.travel_time}}</td>
-        <td class="offset"><p>{{army.time_offset}}</p><!--
+        <td class="dist">{{r.dist}}</td>
+        <td class="eta">{{r.travel_time}}</td>
+        <td class="offset"><p>{{r.time_offset}}</p><!--
         --><input class="offsetInput" type="text" placeholder="hh:mm:ss/-hh:mm:ss" hidden="true"><!--
         --></td>
-        <td class="square"><p>{{army.siege_square}}</p><!--
+        <td class="square"><p>{{r.siege_square}}</p><!--
         --><select class="squareSelect" hidden="true"></select></td>
-        <td class="orders"><p>{{army.orders}}</p><!--
+        <td class="orders"><p>{{r.orders}}</p><!--
         --><select class="ordersSelect" hidden="true"></select></td>
-        <td class="timer">{{army.launch_time}}</td>
+        <td class="timer">{{r.launch_time}}</td>
         <td>
-            <span class="glyphicon glyphicon-ok green saveArmy" title="Save"></span><!--
-        --><span class="glyphicon glyphicon-remove removeArmy red" title="Unassign army"</td>
+            <span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-ok green saveArmy" title="Save"></span><!--
+        --><span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-remove removeArmy red" title="Unassign army"</td>
     </tr>
     {% endfor %}
 </table>

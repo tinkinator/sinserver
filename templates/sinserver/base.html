@@ -1,13 +1,14 @@
   <!DOCTYPE html>
   <html>
   <head>
-    <title>SIN Server</title>
+    <title>Strategos</title>
     {% load staticfiles %}
     <link rel="shortcut icon" type="image/png" href="{% static 'logreg/img/favicon.ico'%}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'logreg/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'logreg/css/styles.css' %}">
     <script src="{% static 'siege/js/jquery-3.1.0.min.js'%}"></script>
     <script src="{% static 'siege/js/jquery.validate.js' %}"></script>
+    <script src="{% static 'siege/js/ajaxhelper.js' %}"></script>
     <script src="{% static 'logreg/js/bootstrap.min.js' %}"></script>
   </head>
   <body>
@@ -16,10 +17,10 @@
     {%if user.is_authenticated %}
     <nav class="navbar navbar-default mynav">
         <ul class="nav-ul">
-            <li><button class="btn navbar-btn"><a href="/siege">Siege</a></button></li>
-            <li><button class="btn navbar-btn"><a href="/siege/armies">My Armies</a></button></li>
-            <li><button class="btn navbar-btn"><a href="#">My Towns</a></button></li>
-            <li><button class="btn navbar-btn"><a href="/logout">Log Out</a></button></li>
+            <li><div class="nav-btn"><a href="/siege" class="btn navbar-btn">Siege</a></div></li>
+            <li><div class="nav-btn"><a href="/siege/armies" class="btn navbar-btn">My Armies</a></div></li>
+            <li><div class="nav-btn"><a href="/siege/cities" class="btn navbar-btn">My Towns</a></div></li>
+            <li><div class="nav-btn"><a href="/logout" class="btn navbar-btn">Log Out</a></div></li>
         </ul>
     </nav>
     {% endif %}

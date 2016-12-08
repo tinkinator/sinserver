@@ -1,4 +1,3 @@
-# [START replication_controller]
 apiVersion: v1
 kind: Pod
 metadata:
@@ -8,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: strategos
-      image: gcr.io/strategos-151306/strategos:1.0.1
+      image: gcr.io/strategos-151306/strategos:1.0.3
       ports:
         - containerPort: 8080
           name: strategos
@@ -19,6 +18,8 @@ spec:
           value: "8080"
         - name: SQLITE_DATA_PATH
           value: "/data"
+        - name: LOG_LEVEL
+          value: "debug"
       volumeMounts:
         - name: strategos-sqlite-data
           mountPath: /data
@@ -28,23 +29,18 @@ spec:
         pdName: strategos-sqlite
         fsType: ext4
 
-# [END replication_controller]
-
 ---
 
-# [START service]
 apiVersion: v1
 kind: Service
 metadata:
-  name: strategos
+  name: strategos-frontend
   labels:
-    name: strategos
+    name: strategos-frontend
 spec:
   type: LoadBalancer
   ports:
   - port: 80
-    protocol: TCP
     targetPort: 8080
   selector:
-    name: strategos
-# [END service]
+    app: strategos

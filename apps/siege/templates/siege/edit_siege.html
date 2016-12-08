@@ -33,9 +33,9 @@
             --></td>
             <td class="landing">{{siege.landing_time}}</td>
             <td>
-                <button class="btn">Edit</button>
-                <button class="btn">Delete</button>
-                <button class="btn">View Schedule</button>
+                <button id="{{ siege.id }}" class="edit btn btn-success">Edit</button>
+                <button id="{{ siege.id }}" class="delete btn btn-danger">Delete</button>
+                <button class="btn btn-info">View Schedule</button>
             </td>
         </tr>
     </table>

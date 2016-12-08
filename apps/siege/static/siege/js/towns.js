@@ -12,51 +12,49 @@ $(document).ready(function(){
             }
         },
         rules: {
-            city: {
+            name: {
                 required: true
             },
-            troop_type: {
+            x_coord: {
                 required: true
             },
-            troop_count: {
-                required: true,
-                min: 10
+            y_coord: {
+                required: true
             },
-            speed: {
-                required: true,
-                min: 5
+            region: {
+                required: true
             }
         },
         messages: {
-            city: {
-                required: "No city chosen!"
+            name: {
+                required: "City name cannot be blank"
             },
-            troop_type: {
-                required: "Choose a troop type!"
+            x_coord: {
+                required: "No X coordinate entered"
             },
-            troop_count: {
-                required: "No troop count entered",
-                min: "Mr. General, put at least 10 soldiers in your army!"
+            y_coord: {
+                required: "No Y coordinate entered"
             },
-            speed: {
-                required: "No speed entered!",
-                min: "Are you kidding? Even slugs go 5 sq/hour!"
+            region: {
+                required: "No region entered"
             }
         }
     });
 
-    $('.mytable').on('click', '.delete', function(){
-        var armyId = $(this).parent().parent().attr('id')
+     $('.mytable').on('click', '.delete', function(){
+        var cityId = $(this).parent().parent().attr('id');
         $.ajax({
-            url: "/siege/armies/"+armyId,
+            url: "/siege/cities/"+cityId,
             type: 'DELETE',
             success: function(data, textStatus, xhr){
                 console.log(textStatus);
-                window.location.href=('/siege/armies');
+                window.location.href=('/siege/cities');
             },
             error: function(error){
                 console.log(error);
             }
         })
-    })
+
+    });
 });
+

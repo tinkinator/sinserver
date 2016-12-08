@@ -1,7 +1,7 @@
 {% extends "sinserver/base.html" %}
 {% block content %}
 {% load staticfiles %}
-<script src="{% static 'siege/js/armies.js' %}"></script>
+<script src="{% static 'siege/js/towns.js' %}"></script>
 <h1>{{player}}'s cities</h1>
 <table class="mytable table">
         <thead>
@@ -19,50 +19,24 @@
             <td>{{city.x_coord}}</td>
             <td>{{city.y_coord}}</td>
             <td>{{city.region}}</td>
-            <td><button class="btn btn-success" id="edit{{army.id}}">Edit</button></td>
+            <td><button class="btn btn-success" id="edit{{army.id}}">Edit</button>
+            <button class="delete btn btn-danger">Delete</button>
+            </td>
         </tr>
         {% endfor %}
     </table>
     <div class="wrapper-left">
-    <form id="cityForm" action="{% url 'newcity' %}" method = 'POST'>{%csrf_token%}
+    <form id="armyForm" action="{% url 'newcity' %}" method = 'POST'>{%csrf_token%}
         <input type="hidden" name="player" value={{player_id}}>
         <label class="army-label" for="id_name">City Name</label>
-        <input id="name" type="text">
-        <label class="army-label" for="id_troop_type">Troop type</label>
-        <select id="id_troop_type" name="troop_type">
-            <option value="" selected="selected">---------</option>
-            <option value="SP_T1">T1 Spears</option>
-            <option value="SP_T2">T2 Spears</option>
-            <option value="BOW_T1">T1 Bows</option>
-            <option value="BOW_T2">T2 Bows</option>
-            <option value="INF_T1">T1 Infantry</option>
-            <option value="INF_T2">T2 Infantry</option>
-            <option value="CAV_T1">T1 Cavalry</option>
-            <option value="CAV_T2">T2 Cavalry</option>
-            <option value="MIX_SP">Mixed spears</option>
-            <option value="MIX_BOW">Mixed bows</option>
-            <option value="MIX_INF">Mixed infantry</option>
-            <option value="MIX_CAV">Mixed cav</option>
-            <option value="MIX">Kitchen sink</option>
-        </select>
-        <label class="army-label" for="id_troop_count">Troop count</label>
-        <input class="input-big-number" id="id_troop_count" name="troop_count" type="number" value="0">
-        <label class="army-label" for="id_speed">Speed</label>
-        <input class="input-number" id="id_speed" name="speed" type="number" value="0">
-        <label class="army-label" for="id_siege_engines">Siege engines</label>
-        <input class="input-number" id="id_siege_engines" name="siege_engines" type="number" value="0">
-        <label class="army-label" for="id_wall_engines">Wall engines</label>
-        <input class="input-number" id="id_wall_engines" name="wall_engines" type="number" value="0">
-        <label class="army-label" for="id_elite_type">Elite type</label>
-        <select id="id_elite_type" name="elite_type">
-            <option value="" selected="selected">---------</option>
-            <option value="CAV">Anti-Cavalry</option>
-            <option value="INF">Anti-Infantry</option>
-            <option value="BOW">Anti-Bow</option>
-        </select>
-        <label class="army-label" for="id_elite_divs_number">Elite divs number</label>
-        <input class="input-number" id="id_elite_divs_number" name="elite_divs_number" type="number" value="0">
-    <button id="army-button" button type="submit" class="btn btn-primary">Add Army</button>
+        <input id="id_name" name="name" type="text">
+        <label class="army-label" for="id_region">Region</label>
+        <input id="id_region" name="region" type="text">
+        <label class="army-label" for="id_x_coord">X coord</label>
+        <input class="input-number" id="id_x_coord" name="x_coord" type="number" value="0">
+        <label class="army-label" for="id_y_coord">Y coord</label>
+        <input class="input-number" id="id_y_coord" name="y_coord" type="number" value="0">
+    <button id="army-button" button type="submit" class="btn btn-primary">Add City</button>
     </form>
     </div>
 {% endblock %}

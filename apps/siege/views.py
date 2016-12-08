@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.forms.models import model_to_dict
 from math import sqrt
-from .models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm)
+from .models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm, CityForm)
 
 date_format = "%m-%d-%Y %H:%M:%S"
 offset_regex = re.compile(r'(-?)(\d{2,}):([0-5][0-9]):([0-5][0-9])')
@@ -51,14 +51,15 @@ def armies(request):
 
 @login_required(login_url='/', redirect_field_name=None)
 def edit_siege(request, siege):
+    # Take the user to the edit siege page
     if request.method == 'GET':
-        # Takes the user to the edit siege page
         inner_queryset = set(Siege_army.objects.all())
         armies = Army.objects.filter(siege_army__isnull=True).values()
         the_siege = model_to_dict(Siege.objects.get(id=siege))
 
         for army in armies:
-            city = City.objects.get(id__in=Army.objects.filter(id=army['id']))
+            print "%%%%%%%%%%%%, %s" % army
+            city = City.objects.get(id=army['city_id'])
             army['city'] = city.name
             army['player'] = Player.objects.get(id=army['player_id']).__str__()
             distance = calc_dist(city.x_coord, city.y_coord, the_siege['x_coord'], the_siege['y_coord'])
@@ -78,6 +79,11 @@ def edit_siege(request, siege):
         }
         print "Number of queries made: {0}".format(len(db.connection.queries))
         return render(request, 'siege/edit_siege.html', context)
+    # Delete a siege and re-render manage.html
+    elif request.method == 'DELETE':
+        the_siege = Siege.objects.get(id=siege)
+        the_siege.delete()
+        return HttpResponse("success")
 
 
 def add_army_tosiege(request, siege):
@@ -108,6 +114,10 @@ def update_siegearmy(request, siege, army):
         siege_army.orders = body['orders']
         siege_army.save()
         return HttpResponse("Mkay!")
+    elif request.method == 'DELETE':
+        siege_army = Siege_army.objects.get(id=int(army))
+        siege_army.delete()
+        return HttpResponse("1 siege deleted")
 
 
 def show_armies(request):
@@ -153,8 +163,42 @@ def save_army(request, army):
         thearmy.speed = speed
         thearmy.save()
         return HttpResponse("success")
+    elif request.method == "DELETE":
+        thearmy = Army.objects.get(id=int(army))
+        thearmy.delete()
+        return HttpResponse("1 army deleted")
+
+
+@login_required(login_url='/', redirect_field_name=None)
+def show_cities(request):
+    context = {}
+    context['player'] = request.user.username
+    context['player_id'] = request.user.id
+    context['cities'] = City.objects.filter(player=request.user.player)
+    return render(request, 'siege/towns.html', context)
+
+
+def create_city(request):
+    print "something else happened??????"
+    player = request.user.username
+    if request.method == "POST":
+        form = CityForm(request.POST)
+        print "Form: {0}".format(form)
+        if form.is_valid():
+            city = form.save(commit=False)
+            city.save()
+            return redirect('cities')
+        else:
+            print "Errors: {0}".format(form.errors)
     else:
-        return HttpResponse("huh?")
+        form = CityForm()
+    return render(request, 'siege/armies.html', {'form': form, 'player': player})
+
+def save_city(request, city):
+    if request.method == "DELETE":
+        thecity = City.objects.get(id=int(city))
+        thecity.delete()
+        return HttpResponse("1 city deleted")
 
 
 def calc_dist(x1, y1, x2, y2):
@@ -181,8 +225,6 @@ def calc_launch_time(landing_time, offset1, offset2=None):
         delta2 = timedelta(seconds = offset2)
         if offset2 < 0:
             delta -= delta2
-            print "%%%%%%%%%%%%%%%%%%%Calculating time delta:"
-            print delta
         else:
             return landing_time - delta + delta2
     return landing_time - delta

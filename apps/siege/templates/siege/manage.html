@@ -1,8 +1,10 @@
 {% extends "sinserver/base.html" %}
 {% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'siege/js/manage.js' %}"></script>
     <h1>Siege dashboard</h1>
     <h3>Current Sieges</h3>
-    <table class="mytable table">
+    <table class="mytable table sieges">
         <thead>
             <tr>
                 <th>Player</th>
@@ -14,20 +16,20 @@
         </thead>
             {% for siege in sieges %}
                 <tr>
-                    <td>{{siege.target_player}}</td>
-                    <td>{{siege.target_city}}</td>
-                    <td>{%if siege.N%}N {%endif%}<!--
-                    -->{%if siege.NE%}NE {%endif%}<!--
-                    -->{%if siege.E%}E {%endif%}<!--
-                    -->{%if siege.SE%}SE {%endif%}<!--
-                    -->{%if siege.S%}S {%endif%}<!--
-                    -->{%if siege.SW%}SW {%endif%}<!--
-                    -->{%if siege.W%}W {%endif%}<!--
-                    -->{%if siege.NW%}N {%endif%}</td>
-                    <td>{{siege.landing_time}}</td>
+                    <td>{{ siege.target_player }}</td>
+                    <td>{{ siege.target_city }}</td>
+                    <td>{% if siege.N %}N {%endif%}<!--
+                    -->{% if siege.NE %}NE {%endif%}<!--
+                    -->{% if siege.E %}E {%endif%}<!--
+                    -->{% if siege.SE %}SE {%endif%}<!--
+                    -->{% if siege.S %}S {%endif%}<!--
+                    -->{% if siege.SW %}SW {%endif%}<!--
+                    -->{% if siege.W %}W {%endif%}<!--
+                    -->{% if siege.NW %}N {%endif%}</td>
+                    <td>{{ siege.landing_time }}</td>
                     <td>
-                        <button class="btn btn-success"><a href="/siege/{{siege.id}}">Edit</a></button>
-                        <button class="btn btn-danger"><a href="#">Delete</a></button>
+                        <button id="{{ siege.id }}" class="edit btn btn-success">Edit</button>
+                        <button id="{{ siege.id }}" class="delete btn btn-danger">Delete</button>
                     </td>
                 </tr>
             {% endfor %}

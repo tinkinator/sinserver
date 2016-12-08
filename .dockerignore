@@ -1,1 +1,6 @@
 deploy/
+cors-json-file.json
+deploy-gke.sh
+strategos.yaml
+strategos-deployment.yaml
+db.sqlite3

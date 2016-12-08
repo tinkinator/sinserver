@@ -173,18 +173,19 @@ $(document).ready(function(){
     });
 
     /*change army speed*/
-    $('.siegetable').on('click', 'td.speed p', function(){
+    $('.siegetable').on('click', '.speed p', function(){
         var speed = $(this).text();
         var parent = $(this).parent();
-        $(this).hide();
         var speedInput = parent.find('.speedInput');
+        $(this).hide();
+        console.log("Printing speedinput", speedInput);
         speedInput.val(speed);
         speedInput.show();
-        speedInput.focus();
+        setTimeout(function(){speedInput.focus()},200);
     });
 
     /*focusing out of speed input turns it back into a table cell*/
-    $('.siegetable').on('focusout', '.speedInput', function(){
+    $('.siegetable').on('blur', '.speedInput', function(){
         var row = $(this).parent().parent();
         
         var speed = $(this).val();
@@ -220,6 +221,45 @@ $(document).ready(function(){
         offsetInput.val(offset);
         offsetInput.show();
         offsetInput.focus();
+    });
+
+    /*Deleting siege on the edit siege table should redirect back to the dashboard*/
+    $('#sieges').on('click', '.delete', function () {
+        $.ajax({
+            url: "/siege/" + $(this).attr('id'),
+            type: 'DELETE',
+            success: function (data, textStatus, xhr) {
+                console.log(textStatus);
+                window.location.href = ("/siege/");
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    /*Clicking on the edit button should bring up a siege form*/
+    $('#sieges').on('click', '.edit', function () {
+        console.log("editing this siege")
+        });
+
+    /*Clicking on the delete icon in the assigned table should delete army from siege*/
+    $('#assigned').on('click', '.removeArmy', function(){
+        var id = $(this).parent().parent().attr('data');
+        var siegeId = $(this).attr('data');
+        console.log("Siegearmy ID:", id);
+        $.ajax({
+            url: "/siege/" + siegeId + "/armies/" + id,
+            type: 'DELETE',
+            success: function(data, textStatus, xhr){
+            console.log(textStatus);
+            window.location.href = "/siege/" + siegeId;
+        },
+        error: function(error){
+            console.log(error);
+        }
+        })
+
     });
 
     function validateOffset(offset){
@@ -308,59 +348,4 @@ $(document).ready(function(){
         }
         return seconds;
     }
-
-    /*AJAX POST helper functions*/
-
-    // This function gets cookie with a given name
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-
-    /*
-    The functions below will create a header with csrftoken
-    */
-
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-    function sameOrigin(url) {
-        // test that a given url is a same-origin URL
-        // url could be relative or scheme relative or absolute
-        var host = document.location.host; // host + port
-        var protocol = document.location.protocol;
-        var sr_origin = '//' + host;
-        var origin = protocol + sr_origin;
-        // Allow absolute or scheme relative URLs to same origin
-        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-            // or any other URL that isn't scheme relative or absolute i.e relative.
-            !(/^(\/\/|http:|https:).*/.test(url));
-    }
-
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                // Send the token to same-origin, relative URLs only.
-                // Send the token only if the method warrants CSRF protection
-                // Using the CSRFToken value acquired earlier
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-});
-
-
 });

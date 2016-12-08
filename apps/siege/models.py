@@ -44,7 +44,6 @@ class SiegeForm(ModelForm):
             )
 
 
-
 class City(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     name = models.CharField(max_length = 100)
@@ -55,6 +54,18 @@ class City(models.Model):
         return str(self.player) + "-" + str(self.name)
     class Meta:
         db_table = 'cities'
+
+class CityForm(ModelForm):
+    class Meta:
+        model = City
+        fields = (
+            'name',
+            'player',
+            'x_coord',
+            'y_coord',
+            'region'
+        )
+
 
 class Army(models.Model):
     TROOPTYPE_CHOICES = (
@@ -81,7 +92,7 @@ class Army(models.Model):
 
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     #army_number = models.SmallIntegerField(default=0)
-    city = models.ForeignKey(City)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     troop_type = models.CharField(choices=TROOPTYPE_CHOICES, max_length = 100)
     troop_count = models.IntegerField(default=0)
     siege_engines = models.SmallIntegerField(default=0)
@@ -130,8 +141,8 @@ class Siege_army(models.Model):
         ('siege', 'siege')
         )
 
-    siege_id = models.ForeignKey(Siege)
-    army_id = models.ForeignKey(Army)
+    siege_id = models.ForeignKey(Siege, on_delete=models.CASCADE)
+    army_id = models.ForeignKey(Army, on_delete=models.CASCADE)
     siege_square = models.CharField(max_length = 3, choices=SQUARES)
     time_offset = models.IntegerField(default=0)
     orders = models.CharField(choices=ORDERS, max_length = 30, default='occupy')

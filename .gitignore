@@ -8,3 +8,5 @@ settings.py
 .idea
 deploy/
 allstatic
+cors-json-file.json
+deploy-gke.sh

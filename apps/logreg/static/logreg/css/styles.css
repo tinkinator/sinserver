@@ -8,12 +8,24 @@ body{
     background-color: #E8DAC6;
 }
 
-button a{
+a.btn{
     color: ghostwhite;
+    font-weight: bold;
 }
-    button a:hover{
+    a.btn:hover{
         color: ghostwhite;
         text-decoration: none;
+        font-weight: bold;
+    }
+
+.nav-btn{
+    margin: 4px 2px;
+    border-radius: 5%;
+    background-color: #f8f8f8;
+    display: inline-block;
+}
+    .nav-btn:hover{
+        background-color: gainsboro;
     }
 
 .container{
