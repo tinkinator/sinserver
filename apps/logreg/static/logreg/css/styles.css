@@ -13,7 +13,6 @@ a.btn{
     font-weight: bold;
 }
     a.btn:hover{
-        color: ghostwhite;
         text-decoration: none;
         font-weight: bold;
     }
@@ -69,7 +68,7 @@ a.btn{
     font-size: 0.5 em;
     color: red;
     margin: 0;
-}    
+}
 
 /*Login page*/
 #img-bg{
@@ -117,6 +116,8 @@ a.btn{
     padding: 10px;
     font-size: 2em;
 }
+
+
 
 /*Edit siege page*/
 .mytable{
@@ -242,4 +243,8 @@ only screen and (max-width: 760px),
 
 .input-big-number{
     width: 5em;
+}
+
+li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
+    color: #337ab7;
 }

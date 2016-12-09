@@ -33,6 +33,7 @@ class SiegeForm(ModelForm):
             'target_city',
             'x_coord',
             'y_coord',
+            'landing_time',
             'N',
             'NE',
             'E',

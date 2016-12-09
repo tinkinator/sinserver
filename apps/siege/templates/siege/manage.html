@@ -38,7 +38,38 @@
     <div class="wrapper-left">
     <h3>New Siege</h3>
     <form id="siege" action="{% url 'new' %}" method='POST'>{% csrf_token %}
-        {{ form }}
+        <label for="id_target_player">Target player</label><!--
+        --><input id="id_target_player" maxlength="100" name="target_player" type="text">
+        <label for="id_target_city">Target city</label><!--
+        --><input id="id_target_city" maxlength="100" name="target_city" type="text">
+        <label for="id_x_coord">X coord</label><!--
+        --><input id="id_x_coord" name="x_coord" type="number">
+        <label for="id_y_coord">Y coord</label><!--
+        --><input id="id_y_coord" name="y_coord" type="number">
+        <label for="id_landing_time">Landing time, UTC</label><!--
+        -->
+        <div class="form-group">
+            <div class="input-group date" id="dp" style="display:inline-flex;">
+                <input id="id_landing_time" name="landing_time" type="text" style="width:100%"><!--
+                --><span class="input-group-addon" style="padding: 6px 18px;"><!--
+                --><span class="glyphicon glyphicon-calendar" style="top:8px; right: 5px;"></span>
+                    </span>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function(){
+                $('#dp').datetimepicker({useUtc: true});
+            });
+        </script>
+        <label for="id_N">N</label><input id="id_N" name="N" type="checkbox">
+        <label for="id_NE">NE</label><input id="id_NE" name="NE" type="checkbox">
+        <label for="id_E">E</label><input id="id_E" name="E" type="checkbox">
+        <label for="id_SE">SE</label><input id="id_SE" name="SE" type="checkbox">
+        <label for="id_S">S</label><input id="id_S" name="S" type="checkbox">
+        <label for="id_SW">SW</label><input id="id_SW" name="SW" type="checkbox">
+        <label for="id_W">W</label><input id="id_W" name="W" type="checkbox">
+        <label for="id_NW">NW</label><input id="id_NW" name="NW" type="checkbox">
+
         <button id="siege-button" button type="submit" class="btn btn-primary">Add Siege</button>
     </form>
     </div>
