@@ -54,9 +54,10 @@ $(document).ready(function(){
         var payload = {};
         var id = row.attr('id');
         payload["speed"] = row.find('.speed').text().trim();
+        payload["ajax"] = "true";
         console.log(payload);
-        $.post(window.location.href+"/armies/"+id, payload, function(data, textStatus, xhr){
-            console.log("success");
+        $.post("/siege/armies/"+id, payload, function(data, textStatus, xhr){
+            console.log(data);
             return false;
         })
     });
@@ -75,6 +76,7 @@ $(document).ready(function(){
             var siegeArmyId = row.attr('data');
             army["speed"] = speed;
             army["troop_count"] = row.find(".troop_count").text();
+            army["ajax"] = "true";
             siege["offset"] = offset;
             siege["siege_square"] = row.find(".square").text();
             siege["orders"] = row.find(".orders").text();

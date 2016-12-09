@@ -59,4 +59,28 @@ $(document).ready(function(){
             }
         })
     })
+
+    $('.mytable').on('click', '.edit', function(){
+        var form = $('#armyForm');
+        var row = $(this).parent().parent();
+        var id = row.attr('id');
+        form.find('#id_city').val(row.find('.city').attr('data'));
+        form.find('#id_troop_type').val(row.find('.troop_type').text());
+        form.find('#id_troop_count').val(parseInt(row.find('.troop_count').text()));
+        form.find('#id_speed').val(parseInt(row.find('.speed').text()));
+        form.find('#id_siege_engines').val(row.find('.siege_engines').text());
+        form.find('#id_wall_engines').val(row.find('.wall_engines').text());
+        form.find('#id_elite_type').val(row.find('.elite_type').text());
+        form.find('#id_elite_divs_number').val(row.find('.elite_divs_number').text());
+        form.find('#army-button').text("Save army");
+        form.append('<button class="btn btn-warning clear">Clear form</button>');
+        form.attr('action', "/siege/armies/" + id);
+    })
+
+    $('#armyForm').on('click', '.clear', function(){
+        $("#armyForm").find('input:text, input[type=number], select').not(":hidden").val("");
+        $("#armyForm").attr('action', '/siege/armies/new');
+        $("#armyForm").find('#army-button').text('Add Army');
+        $(this).remove();
+    })
 });

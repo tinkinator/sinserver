@@ -1,5 +1,5 @@
 /*AJAX POST helper functions*/
-
+$(document).ready(function(){
     // This function gets cookie with a given name
     function getCookie(name) {
         var cookieValue = null;
@@ -49,4 +49,5 @@
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         }
+    });
 });

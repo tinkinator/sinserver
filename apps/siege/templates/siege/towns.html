@@ -15,11 +15,11 @@
         {% for city in cities %}
         <tr id="{{city.id}}">
             <td>{{player}}</td>
-            <td>{{city.name}}</td>
-            <td>{{city.x_coord}}</td>
-            <td>{{city.y_coord}}</td>
-            <td>{{city.region}}</td>
-            <td><button class="btn btn-success" id="edit{{army.id}}">Edit</button>
+            <td class="name">{{city.name}}</td>
+            <td class="x_coord">{{city.x_coord}}</td>
+            <td class="y_coord">{{city.y_coord}}</td>
+            <td class="region">{{city.region}}</td>
+            <td><button class="edit btn btn-success">Edit</button>
             <button class="delete btn btn-danger">Delete</button>
             </td>
         </tr>

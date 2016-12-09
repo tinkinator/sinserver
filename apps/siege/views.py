@@ -155,14 +155,21 @@ def create_army(request):
 
 
 def save_army(request, army):
+    thearmy = Army.objects.get(id=int(army))
+    print ("$$$$$$$$$$$$$$$$$$$$$$ POST data: %s" % request.POST)
     if request.method == "POST":
-        print "$$$$$$$$$$$$$$$$$$ %s" % army
-        speed = float(request.POST["speed"])
-        thearmy = Army.objects.get(id=int(army))
-        print thearmy
-        thearmy.speed = speed
-        thearmy.save()
-        return HttpResponse("success")
+        if "ajax" in request.POST:
+            speed = float(request.POST["speed"])
+            thearmy.speed = speed
+            if "troop_count" in request.POST:
+                thearmy.troop_count = int(request.POST["troop_count"])
+            thearmy.save()
+            return HttpResponse("success")
+        form = ArmyForm(request.POST, instance=thearmy)
+        if form.is_valid():
+            form.save()
+            return redirect("armies")
+        return render("Form was invalid, saving failed")
     elif request.method == "DELETE":
         thearmy = Army.objects.get(id=int(army))
         thearmy.delete()
@@ -199,6 +206,15 @@ def save_city(request, city):
         thecity = City.objects.get(id=int(city))
         thecity.delete()
         return HttpResponse("1 city deleted")
+    elif request.method == "POST":
+        print ("%%%%%%%%%%%%%%%%%%%%% POST data: {0}".format(request.POST))
+        player = request.user.username
+        the_city = City.objects.get(id=int(city))
+        form = CityForm(request.POST, instance=the_city)
+        if form.is_valid():
+            form.save()
+            return redirect('cities')
+        return render(request, 'siege/cities.html', {'form': form, 'player': player})
 
 
 def calc_dist(x1, y1, x2, y2):
