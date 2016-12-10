@@ -14,6 +14,7 @@ from math import sqrt
 from .models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm, CityForm)
 
 date_format = "%m-%d-%Y %H:%M:%S"
+date_format2 = "%"
 offset_regex = re.compile(r'(-?)(\d{2,}):([0-5][0-9]):([0-5][0-9])')
 
 
@@ -29,8 +30,8 @@ def manage(request):
 @login_required(login_url='/', redirect_field_name=None)
 def create_siege(request):
     if request.method == "POST":
-        print request.POST
         form = SiegeForm(request.POST)
+        print form
         if form.is_valid():
             siege = form.save(commit=False)
             siege.save()
@@ -169,7 +170,7 @@ def save_army(request, army):
         if form.is_valid():
             form.save()
             return redirect("armies")
-        return render("Form was invalid, saving failed")
+        return HttpResponse("Form was invalid, saving failed")
     elif request.method == "DELETE":
         thearmy = Army.objects.get(id=int(army))
         thearmy.delete()

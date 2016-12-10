@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 from ..logreg.models import Player
 from django.db import models
-from django.forms import ModelForm
+from django import forms
+from django.forms import ModelForm, DateTimeInput
 from datetime import datetime
 
 # Create your models here.
@@ -26,6 +27,7 @@ class Siege(models.Model):
         db_table = 'sieges'
 
 class SiegeForm(ModelForm):
+    landing_time = forms.DateTimeField(input_formats=['%m/%d/%Y %I:%M %p'])
     class Meta:
         model = Siege
         fields = (
