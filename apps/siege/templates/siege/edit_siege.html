@@ -18,10 +18,10 @@
             </tr>
         </thead>
         <tr>
-            <td>{{siege.target_player}}</td>
-            <td>{{siege.target_city}}</td>
-            <td>{{siege.x_coord}}</td>
-            <td>{{siege.y_coord}}</td>
+            <td class="player">{{siege.target_player}}</td>
+            <td class="city">{{siege.target_city}}</td>
+            <td class="x">{{siege.x_coord}}</td>
+            <td class="y">{{siege.y_coord}}</td>
             <td>{%if siege.N%}N {%endif%}<!--
                 -->{%if siege.NE%}NE {%endif%}<!--
                 -->{%if siege.E%}E {%endif%}<!--
@@ -39,6 +39,29 @@
             </td>
         </tr>
     </table>
+    <div class="form-row" hidden="true">
+        <form id="edit-siege" action="" method="POST">{% csrf_token %}
+            <div class="form-cell"><label>Player</label><input type="text" name="target_player" id="id_target_player"></div>
+            <div class="form-cell"><label>Target City</label><input type="text" name="target_city" id="id_target_city"></div>
+            <div class="form-cell"><label>X</label><input type="text" name="x_coord" id="id_x_coord"></div>
+            <div class="form-cell"><label>Y</label><input type="text" name="y_coord" id="id_y_coord"></div>
+            <div class="form-cell"><label style="display: block">Landing Time, UTC</label>
+            <div class="input-group date" id="dp" style="display:inline-flex;">
+                <input id="id_landing_time" name="landing_time" type="text" style="width:100%"><!--
+                --><span class="input-group-addon" style="padding: 6px 18px;"><!--
+                --><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function(){
+                $('#dp').datetimepicker({useUtc: true});
+            });
+        </script>
+            <button id="siege-button" type="submit" class="btn btn-primary">Save Siege</button>
+        </form>
+    </div>
+
     <h3>Assign Armies</h3>
     <table id="unassignedArmies" class="mytable table table-paginated table-bordered siegetable">
         <thead>

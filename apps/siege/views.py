@@ -82,9 +82,21 @@ def edit_siege(request, siege):
         return render(request, 'siege/edit_siege.html', context)
     # Delete a siege and re-render manage.html
     elif request.method == 'DELETE':
-        the_siege = Siege.objects.get(id=siege)
+        the_siege = Siege.objects.get(id=int(siege))
         the_siege.delete()
         return HttpResponse("success")
+    elif request.method == "POST":
+        print request.POST
+        thesiege = Siege.objects.get(id=int(siege))
+        form = SiegeForm(request.POST, instance=thesiege)
+        print form
+        if form.is_valid():
+            siege = form.save(commit=False)
+            siege.save()
+            return redirect('manage')
+        else:
+            print form.errors
+        return render(request, 'siege/manage.html', {'form': form})
 
 
 def add_army_tosiege(request, siege):

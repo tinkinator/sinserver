@@ -140,6 +140,31 @@ a.btn{
     vertical-align: top;
 }
 
+.form-row{
+    padding: 10px;
+    margin: 0;
+    background-color: rgba(225, 225, 225, 0.8);
+}
+    .form-cell{
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: 5px;
+    }
+
+        .form-cell label{
+            font-size: 0.9em;
+        }
+
+        .form-cell input{
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            height: 30px;
+        }
+
+    #siege #dp span.glyphicon{
+        top: 2px;
+    }
+
 td select{
     width: 90%;
 }
@@ -196,8 +221,8 @@ This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
 @media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+only screen and (max-width: 568px),
+(min-device-width: 320px) and (max-device-width: 568px) {
 
 	/* Force table to not be like tables anymore */
 	table, thead, tbody, th, td, tr {

@@ -6,6 +6,7 @@ $(document).ready(function(){
     /*Datetime format regex*/
     var dateRegex = /(\d{2})\-(\d{2})\-(\d{4})\s(\d{2}):(\d{2}):(\d{2})/;
     var siegeLandTime = dateFromTableCell($('#sieges').find('.landing').text());
+    var editing = false;
 
     /*Adding army row to the siege table*/  
     $(document.body).on('click', '.addsiege', function(event) {
@@ -61,6 +62,30 @@ $(document).ready(function(){
             return false;
         })
     });
+
+    /*show the edit-siege form*/
+    $('#sieges').on('click', '.edit', function(){
+        if(!editing){
+            var id = $(this).attr('id');
+            var row = $(this).parent().parent();
+            var form = $('#edit-siege');
+            form.attr('action', '/siege/'+id);
+            form.find('#id_target_player').val(row.find('.player').text());
+            form.find('#id_target_city').val(row.find('.city').text());
+            form.find('#id_x_coord').val(row.find('.x').text());
+            form.find('#id_y_coord').val(row.find('.y').text());
+            form.find('#id_landing_time').val(row.find('.landing').text());
+            $('.form-row').show();
+            $(this).text('Cancel').removeClass('btn-success').addClass('btn-warning');
+
+            editing = true;
+        }
+        else if(editing){
+            $('.form-row').hide();
+            $(this).text('Edit').removeClass('btn-warning').addClass('btn-success');
+            editing = false;
+        }
+    })
 
     /*save everything about army and siege in the assigned table*/
     $('#assigned').on('click', '.saveArmy', function(){
