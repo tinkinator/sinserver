@@ -91,9 +91,9 @@ def edit_siege(request, siege):
         form = SiegeForm(request.POST, instance=thesiege)
         print form
         if form.is_valid():
-            siege = form.save(commit=False)
-            siege.save()
-            return redirect('manage')
+            siegeObj = form.save(commit=False)
+            siegeObj.save()
+            return redirect('/siege/'+siege)
         else:
             print form.errors
         return render(request, 'siege/manage.html', {'form': form})

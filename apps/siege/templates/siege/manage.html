@@ -37,7 +37,7 @@
 
     <div class="wrapper-left">
     <h3>New Siege</h3>
-    <form id="siege" action="{% url 'new' %}" method='POST'>{% csrf_token %}
+    <form id="siegeForm" action="{% url 'new' %}" method='POST'>{% csrf_token %}
         <label for="id_target_player">Target player</label><!--
         --><input id="id_target_player" maxlength="100" name="target_player" type="text">
         <label for="id_target_city">Target city</label><!--

@@ -22,7 +22,7 @@
             <td class="city">{{siege.target_city}}</td>
             <td class="x">{{siege.x_coord}}</td>
             <td class="y">{{siege.y_coord}}</td>
-            <td>{%if siege.N%}N {%endif%}<!--
+            <td class="squares">{%if siege.N%}N {%endif%}<!--
                 -->{%if siege.NE%}NE {%endif%}<!--
                 -->{%if siege.E%}E {%endif%}<!--
                 -->{%if siege.SE%}SE {%endif%}<!--
@@ -53,9 +53,19 @@
                     </span>
                 </div>
             </div>
+            <div class="form-cell sq">
+                <div class="chbox"><label for="id_N">N</label><input id="id_N" name="N" type="checkbox"></div>
+                <div class="chbox"><label for="id_NE">NE</label><input id="id_NE" name="NE" type="checkbox"></div>
+                <div class="chbox"><label for="id_E">E</label><input id="id_E" name="E" type="checkbox"></div>
+                <div class="chbox"><label for="id_SE">SE</label><input id="id_SE" name="SE" type="checkbox"></div>
+                <div class="chbox"><label for="id_S">S</label><input id="id_S" name="S" type="checkbox"></div>
+                <div class="chbox"><label for="id_SW">SW</label><input id="id_SW" name="SW" type="checkbox"></div>
+                <div class="chbox"><label for="id_W">W</label><input id="id_W" name="W" type="checkbox"></div>
+                <div class="chbox"><label for="id_NW">NW</label><input id="id_NW" name="NW" type="checkbox"></div>
+            </div>
         <script type="text/javascript">
             $(function(){
-                $('#dp').datetimepicker({useUtc: true});
+                $('#dp').datetimepicker({useUtc: true, format: "MM-DD-YYYY HH:mm:ss"});
             });
         </script>
             <button id="siege-button" type="submit" class="btn btn-primary">Save Siege</button>

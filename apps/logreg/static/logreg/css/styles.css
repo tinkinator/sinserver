@@ -125,15 +125,40 @@ a.btn{
 /*Edit siege page*/
 .mytable{
     background-color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
 }
 
     .mytable tbody tr:nth-child(odd){
         background-color: rgba(225, 225, 225, 0.8);
     }
 
+    .mytable input{
+        border: 1px solid rgb(166, 166, 166);
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        background-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        padding: 3px;
+
+    }
+
+    .chbox{
+        display: inline-block;
+        margin-right: 4px;
+    }
+        .chbox label{
+            display: block;
+            margin: 0;
+        }
+
+        .chbox input{
+            margin-top: 0;
+        }
+
 #assigned td, #unassignedArmies td{
     padding-bottom: 3px;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 #assigned th, #unassignedArmies th{
@@ -161,7 +186,11 @@ a.btn{
             height: 30px;
         }
 
-    #siege #dp span.glyphicon{
+    .form-cell.sq {
+        margin-left: 5px;
+    }
+
+    #edit-siege #dp span.glyphicon{
         top: 2px;
     }
 
@@ -180,15 +209,13 @@ td input{
 
 .green{
     color: #257F29;
-    font-size: 2em;
 }
 .green:hover{
     color: #C6C0C6;
 }
 
 .orange{
-    color: #D8803C;
-    font-size: 2em;
+    color: #f98227;
 }
 
 .orange:hover{
@@ -196,12 +223,57 @@ td input{
 }
 
 .red{
-    color: #D85462;
-    font-size: 2em;
+    color: #ff3d62;
 }
 .red:hover{
     color: #C6C0C6;
 }
+
+/*classes for launch time cells*/
+.time-24h-plus{
+    background-color: #ddffdd;
+}
+
+.time-10h-plus{
+    background-color: #f5e79e;
+    color: brown;
+}
+
+.time-2h{
+    background-color: peachpuff;
+    color: darkred;
+}
+
+.time-30min{
+    background-color: lightpink;
+    color: darkred;
+}
+
+.time-15min{
+    background-color: lightpink;
+    color: red;
+}
+
+.time-now{
+    background-color: hotpink;
+    color: darkred;
+}
+
+.time-2h-late{
+    background-color: red;
+    color: white;
+}
+
+.time-10h-late{
+    background-color: #96c6d7;
+    color: blue;
+}
+
+.time-very-late{
+    background-color: #5b80b2;
+    color: navy;
+}
+
 
 span.glyphicon{
     margin-right: 10px;
@@ -227,8 +299,9 @@ only screen and (max-width: 568px),
 	/* Force table to not be like tables anymore */
 	table, thead, tbody, th, td, tr {
 		display: block;
-        font-size: 1.1em;
+        font-size: 13px;
 	}
+
 
 	/* Hide table headers (but not display: none;, for accessibility) */
 	thead tr {
@@ -237,17 +310,42 @@ only screen and (max-width: 568px),
 		left: -9999px;
 	}
 
-	tr { border: 1px solid #ccc; }
+    .mytable.table-bordered{
+        width: 100%;
+    }
+        .mytable.table-bordered tr{
+            border: none;
+        }
+        .mytable.table-bordered td {
+            /* Behave  like a "row" */
+            display: inline-block;
+            border: none;
+            position: relative;
+            padding: 4px;
+            height: 26px;
+        }
+            .mytable.table-bordered td p{
+                margin: 0;
+            }
 
-	td {
-		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid #eee;
-		position: relative;
-		padding-left: 50%;
-	}
+
+    .dataTables_wrapper div.row:first-of-type {
+        font-size: 1.5em;
+    }
 }
 
+@media
+(max-width: 700px)
+{
+    .container{
+        width: 100%;
+        padding-left: 6px;
+    }
+
+    .mytable{
+        width: 95%;
+    }
+}
 /*armies page*/
 #armyForm label, #armyForm input, #armyForm select{
     display: block;

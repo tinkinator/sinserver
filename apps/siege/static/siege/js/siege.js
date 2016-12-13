@@ -8,7 +8,8 @@ $(document).ready(function(){
     var siegeLandTime = dateFromTableCell($('#sieges').find('.landing').text());
     var editing = false;
 
-    /*Adding army row to the siege table*/  
+
+    /*Adding army row to the siege table*/
     $(document.body).on('click', '.addsiege', function(event) {
         var id = sliceAfterDash($(this).attr('id'));
         console.log("ID: ", id);
@@ -75,6 +76,12 @@ $(document).ready(function(){
             form.find('#id_x_coord').val(row.find('.x').text());
             form.find('#id_y_coord').val(row.find('.y').text());
             form.find('#id_landing_time').val(row.find('.landing').text());
+            var squares = row.find('.squares').text().trim().split(' ');
+            var sqForm = form.find('.sq');
+            $.each(squares, function(index, square){
+                console.log(square);
+                sqForm.find('#id_'+square).attr('checked');
+            });
             $('.form-row').show();
             $(this).text('Cancel').removeClass('btn-success').addClass('btn-warning');
 
@@ -84,8 +91,16 @@ $(document).ready(function(){
             $('.form-row').hide();
             $(this).text('Edit').removeClass('btn-warning').addClass('btn-success');
             editing = false;
+            siegeLandTime = dateFromTableCell($('#sieges').find('.landing').text());
+            updateLaunchTimes();
         }
-    })
+    });
+
+    /*focusing out of the landing time field in the form will trigger recalculation of all the launch times*/
+    $('#edit-siege').on('focusout', '#id_landing_time', function(){
+        siegeLandTime = dateFromTableCell($(this).val());
+        updateLaunchTimes();
+    });
 
     /*save everything about army and siege in the assigned table*/
     $('#assigned').on('click', '.saveArmy', function(){
@@ -265,10 +280,6 @@ $(document).ready(function(){
         });
     });
 
-    /*Clicking on the edit button should bring up a siege form*/
-    $('#sieges').on('click', '.edit', function () {
-        console.log("editing this siege")
-        });
 
     /*Clicking on the delete icon in the assigned table should delete army from siege*/
     $('#assigned').on('click', '.removeArmy', function(){
@@ -286,8 +297,98 @@ $(document).ready(function(){
             console.log(error);
         }
         })
-
     });
+
+    function updateLaunchTimes(){
+        var cells = $('#unassignedArmies tr, #assigned tr').find('.timer');
+        $.each(cells, function(index, cell){
+            var row = $(this).parent();
+            var newLaunchTime = calcLaunchTime(row);
+            $(this).text(stringifyDateTime(newLaunchTime));
+        })
+        updateTimeWarnings();
+    }
+
+    function updateTimeWarnings(){
+        var cells = $('#unassignedArmies tr, #assigned tr').find('.timer');
+        $.each(cells, function(index, cell) {
+            changeCellStyle($(this));
+        });
+    }
+
+    updateTimeWarnings();
+    setInterval(updateTime, 120000);
+
+    function getTimeInfo(timeNow, launchTime){
+        var delta = launchTime.getTime() - timeNow.getTime();
+        return [Math.floor(delta/3600000), Math.floor((delta%3600000) / 60000)];
+    }
+
+    function changeCellStyle(cell){
+        var cellText = cell.text();
+        var launchTime = dateFromTableCell(cellText);
+        var timeList = getTimeInfo(new Date(), launchTime);
+        console.log(timeList);
+        var styleClass;
+        var message;
+        switch(true){
+            case(timeList[0] >= 24):
+                styleClass = "time-24h-plus";
+                message = "over 24 hours before launch";
+                break;
+
+            case(timeList[0] < 24 && timeList[0] >= 10):
+                styleClass = "time-10h-plus";
+                message = "over 10 hours before launch";
+                break;
+
+            case(timeList[0] < 10 && timeList[0] > 2):
+                styleClass = "time-2h";
+                message = "10 - 2 hours before launch";
+                break;
+
+            case((timeList[0] <= 2 && timeList[0] >= 1) || (timeList[0] < 1 && timeList[1] >= 30)):
+                styleClass = "time-30min";
+                message = "2 hours - 30 minutes before launch";
+                break;
+
+            case(timeList[0] == 0 && timeList[1] < 30 && timeList[1] >= 15):
+                styleClass = "time-15min";
+                message = "less than 30 minutes before launch";
+                break;
+
+            case(timeList[0] == 0 && timeList[1] < 15):
+                styleClass = "time-now";
+                message = "less than 15 minutes before launch";
+                break;
+
+            case(timeList[0] < 0 && timeList[0] >= -2):
+                styleClass = "time-2h-late";
+                message = "under 2 hours late";
+                break;
+
+            case(timeList[0] < 0 && timeList[0] >= -10):
+                styleClass = "time-10h-late";
+                message = "under 10 hours late";
+                break;
+
+            case(timeList[0] < 0 && timeList[0] < -10):
+                styleClass = "time-very-late";
+                message = "more than 10 hours late";
+                break;
+
+            default:
+                styleClass = "";
+        }
+        var classes = cell.attr('class').split(' ');
+        $.each(classes, function(i, c){
+            if(c.indexOf("time-") == 0 && c != styleClass){
+                cell.removeClass(c);
+            }
+        });
+        cell.addClass(styleClass);
+        cell.attr('title', message);
+    }
 
     function validateOffset(offset){
         if (offset == "" || !offset.match(offsetRegex)) {

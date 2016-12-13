@@ -27,7 +27,7 @@ class Siege(models.Model):
         db_table = 'sieges'
 
 class SiegeForm(ModelForm):
-    landing_time = forms.DateTimeField(input_formats=['%m/%d/%Y %I:%M %p'])
+    landing_time = forms.DateTimeField(input_formats=['%m/%d/%Y %I:%M %p', '%m-%d-%Y %H:%M:%S'])
     class Meta:
         model = Siege
         fields = (
