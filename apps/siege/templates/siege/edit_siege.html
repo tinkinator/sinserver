@@ -117,9 +117,9 @@
                 <option value="{{order}}">{{order}}</option>
                 {% endfor %}
             </td>
-            <td class="timer">{{army.launch_time}}</td>
-            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="addsiege glyphicon glyphicon-plus orange" title="Add army"></span>
-            <span class="glyphicon glyphicon-ok green saveArmy" title="Save army"></span></td>
+            <td class="timer" data-toggle="tooltip" data-placement="top">{{army.launch_time}}</td>
+            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="addsiege glyphicon glyphicon-plus orange" data-toggle="tooltip" data-placement="top" title="Add army"></span>
+            <span class="glyphicon glyphicon-ok green saveArmy" data-toggle="tooltip" data-placement="top" title="Save army"></span></td>
         </tr>
         {% endfor %}
         </tbody>

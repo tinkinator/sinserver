@@ -317,7 +317,7 @@ $(document).ready(function(){
     }
 
     updateTimeWarnings();
-    setInterval(updateTime, 120000);
+    setInterval(updateTimeWarnings, 120000);
 
     function getTimeInfo(timeNow, launchTime){
         var delta = launchTime.getTime() - timeNow.getTime();

@@ -31,10 +31,10 @@
         --><select class="squareSelect" hidden="true"></select></td>
         <td class="orders"><p>{{r.orders}}</p><!--
         --><select class="ordersSelect" hidden="true"></select></td>
-        <td class="timer">{{r.launch_time}}</td>
+        <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
         <td>
-            <span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-ok green saveArmy" title="Save"></span><!--
-        --><span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-remove removeArmy red" title="Unassign army"</td>
+            <span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-ok green saveArmy" data-toggle="tooltip" data-placement="top" title="Save"></span><!--
+        --><span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-remove removeArmy red" data-toggle="tooltip" data-placement="top" title="Unassign army"</td>
     </tr>
     {% endfor %}
 </table>

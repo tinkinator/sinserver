@@ -17,6 +17,14 @@ a.btn{
         font-weight: bold;
     }
 
+.tooltip.top .tooltip-inner{
+    background-color: #7e7b7c;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: #7e7b7c;
+}
+
 .nav-btn{
     margin: 4px 2px;
     border-radius: 5%;
