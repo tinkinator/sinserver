@@ -1,11 +1,10 @@
 {% extends "sinserver/base.html" %}
 {% block content %}
 {% load staticfiles %}
-    <script src="{% static 'siege/js/datatables.js' %}"></script>
     <script src="{% static 'siege/js/siege.js' %}"></script>
     {% load siege_tags %}
     <h1>Siege Plan</h1>
-    <table id="sieges" class="mytable table">
+    <table id="sieges" class="mytable table mytable-compact">
         <thead>
             <tr>
                 <th>Player</th>
@@ -71,7 +70,18 @@
             <button id="siege-button" type="submit" class="btn btn-primary">Save Siege</button>
         </form>
     </div>
-
+    <div id="castle-toggle"></div>
+    <div id="layout" hidden="true">
+        <div class="siege-plan" id="NW"></div><!--
+        --><div class="siege-plan" id="N"></div><!--
+        --><div class="siege-plan" id="NE"></div><!--
+        --><div class="siege-plan" id="W"></div><!--
+        --><div class="siege-plan" id="DIR"></div><!--
+        --><div class="siege-plan" id="E"></div><!--
+        --><div class="siege-plan" id="SW"></div><!--
+        --><div class="siege-plan" id="S"></div><!--
+        --><div class="siege-plan" id="SE"></div>
+    </div>
     <h3>Assign Armies</h3>
     <table id="unassignedArmies" class="mytable table table-paginated table-bordered siegetable">
         <thead>
@@ -99,7 +109,7 @@
             <td>{{army.troop_count}}</td>
             <td class="speed">
                 <p>{{army.speed}}</p>
-                <input type='number' class='speedInput' hidden="true">
+                <input type='text' class='speedInput' hidden="true">
             </td>
             <td class="dist">{{army.dist}}</td>
             <td class="eta">{{army.time}}</td>
@@ -125,6 +135,8 @@
         </tbody>
     </table>
     <h3>Armies in Siege</h3>
+    <div id="assigned-partial">
     {% siege_armies_partial %}
+    </div>
     {% endblock %}
     

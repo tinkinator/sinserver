@@ -1,5 +1,7 @@
 $(document).ready(function(){
-
+    var mytable = $('.mytable').DataTable({
+        "paging": false
+    });
     $('#armyForm').validate({
         errorElement: "div",
         errorPlacement: function(error, element){

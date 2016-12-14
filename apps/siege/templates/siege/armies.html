@@ -3,17 +3,17 @@
 {% load staticfiles %}
 <script src="{% static 'siege/js/armies.js' %}"></script>
 <h1>{{player}}'s armies</h1>
-<table class="mytable table">
+<table class="mytable table mytable-compact nowrap">
         <thead>
             <th>Player</th>
             <th>City</th>
-            <th>Troop type</th>
+            <th>Type</th>
             <th>Speed</th>
-            <th>Troop number</th>
-            <th>Siege engines</th>
-            <th>Wall engines</th>
-            <th>Elites number</th>
-            <th>Elites type</th>
+            <th>Troops</th>
+            <th>Cats</th>
+            <th>Rams</th>
+            <th>Elites</th>
+            <th>Type</th>
             <th>Action</th>
         </thead>
         {% for army in armies %}
@@ -64,7 +64,7 @@
         <label class="army-label" for="id_troop_count">Troop count</label>
         <input class="input-big-number" id="id_troop_count" name="troop_count" type="text" value="0">
         <label class="army-label" for="id_speed">Speed</label>
-        <input class="input-number" id="id_speed" name="speed" type="text" value="0">
+        <input class="input-big-number" id="id_speed" name="speed" type="text" value="0">
         <label class="army-label" for="id_siege_engines">Siege engines</label>
         <input class="input-number" id="id_siege_engines" name="siege_engines" type="text" value="0">
         <label class="army-label" for="id_wall_engines">Wall engines</label>

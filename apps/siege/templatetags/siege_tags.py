@@ -1,6 +1,6 @@
 from datetime import datetime
 from django import db, template
-from ..views import calc_dist, calc_time, calculate_target_coord, calc_launch_time
+from ..helper import *
 from django.forms.models import model_to_dict
 from ..models import (Siege_army)
 

@@ -20,7 +20,7 @@
         <td>{{r.troop_type}}</td>
         <td class="troop_count">{{r.troop_count}}</td>
         <td class="speed"><p>{{r.speed}}</p><!--
-        --><input type='number' class='speedInput' hidden="true">
+        --><input type='text' class='speedInput' hidden="true">
         </td>
         <td class="dist">{{r.dist}}</td>
         <td class="eta">{{r.travel_time}}</td>
@@ -39,7 +39,5 @@
     {% endfor %}
 </table>
 <script type="text/javascript">
-    $(document).ready(function(){
-        var assignedTable = $('#ass').DataTable();
-    });
+
 </script>

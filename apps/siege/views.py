@@ -2,7 +2,7 @@ from __future__ import division
 import json
 import re
 from datetime import datetime, timedelta
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.utils import timezone
 from django import db, template
 from django.http import JsonResponse, HttpResponse
@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.forms.models import model_to_dict
 from math import sqrt
 from .models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm, CityForm)
+from .templatetags import siege_tags
+from .helper import *
 
 date_format = "%m-%d-%Y %H:%M:%S"
 date_format2 = "%"
@@ -112,7 +114,11 @@ def add_army_tosiege(request, siege):
         the_army = Army.objects.get(id=int(request.POST["armyId"]))
         newSiegeArmy = Siege_army(siege_id=the_siege, army_id=the_army, siege_square=square, time_offset=offset, orders=request.POST["Orders"])
         newSiegeArmy.save()
-        return HttpResponse("Mkay!")
+        partial_context = {}
+        partial_context['siege'] = {}
+        partial_context['siege']['id'] = siege
+        context = siege_tags.siege_armies_partial(partial_context)
+        return render_to_response('siege/siege_armies_partial.html', context)
 
     
 def update_siegearmy(request, siege, army):
@@ -230,54 +236,6 @@ def save_city(request, city):
         return render(request, 'siege/cities.html', {'form': form, 'player': player})
 
 
-def calc_dist(x1, y1, x2, y2):
-    return sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
-
-def calc_time(speed, distance):
-    hours = float(distance) / float(speed)
-    return hours
-
-def offset_fromstring(offset_string):
-    offset = re.match(offset_regex, offset_string)
-    offset_seconds = int(
-        offset.group(2)) * 3600 \
-                     + int(offset.group(3)) * 60 \
-                     + int(offset.group(4))
-    if offset.group(1):
-        offset_seconds = -offset_seconds
-    return offset_seconds
-
-def calc_launch_time(landing_time, offset1, offset2=None):
-    delta = timedelta(hours = offset1)
-    if offset2 is not None:
-        delta2 = timedelta(seconds = offset2)
-        if offset2 < 0:
-            delta -= delta2
-        else:
-            return landing_time - delta + delta2
-    return landing_time - delta
-
-
-def calculate_target_coord(square, x, y):
-    if square == "N":
-        return (x, y-1)
-    elif square == "NE":
-        return (x+1, y-1)
-    elif square == "E":
-        return (x+1, y)
-    elif square == "SE":
-        return (x+1, y+1)
-    elif square == "S":
-        return (x, y+1)
-    elif square == "SW":
-        return (x-1, y+1)
-    elif square == "W":
-        return (x-1, y)
-    elif square == "NW":
-        return (x-1, y-1)
-    else:
-        return (x, y)
 
 
 

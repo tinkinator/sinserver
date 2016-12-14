@@ -1,13 +1,41 @@
 $(document).ready(function(){
 
-    $('.table-paginated').DataTable();
-    /*Time offset regex*/ 
+    var tableUnassigned = $('#unassignedArmies').DataTable();
+    var tableAssigned = $('#assigned').DataTable();
+    /*Regexes*/
     var offsetRegex = /(-?)([\d]{2,}):([0-5][0-9]):([0-5][0-9])/;
-    /*Datetime format regex*/
     var dateRegex = /(\d{2})\-(\d{2})\-(\d{4})\s(\d{2}):(\d{2}):(\d{2})/;
+
     var siegeLandTime = dateFromTableCell($('#sieges').find('.landing').text());
     var editing = false;
 
+    /*Populate the siege stats div with graphics for each square*/
+    function populateSiegeStats(){
+        var squares = $('#sieges .squares').text().trim().split(' ');
+        squares.push("DIR");
+        $.each(squares, function(index, val){
+            var troopCount = getTroopTotals(val);
+            $('#layout').find('#' + val)
+                .html(
+                "<p>CAV: " + troopCount['cav'] + "</p>" +
+                "<p>INF: " + troopCount['inf'] + "</p>" +
+                "<p>BOW: " + troopCount['bows'] + "</p>" +
+                "<p>SP: " + troopCount['spears'] + "</p>"
+                );
+            });
+        }
+
+    /*Display siege stats when icon clicked*/
+    $('#castle-toggle').click(function(){
+        populateSiegeStats();
+        $(this).hide();
+        $('#layout').show();
+    });
+
+    $('#layout').click(function(){
+        $(this).hide();
+        $('#castle-toggle').show();
+    });
 
     /*Adding army row to the siege table*/
     $(document.body).on('click', '.addsiege', function(event) {
@@ -43,8 +71,13 @@ $(document).ready(function(){
               
         if(!error){
         $.post(window.location.href+"/addarmy", payLoad, function(data, textStatus, xhr) {
-            console.log("success");
+            console.log("success", payLoad);
             $('#'+id).remove();
+
+            $('#assigned-partial').html(data);
+            $('#assigned').DataTable();
+            $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+            updateLaunchTimes();
             return false;
         });
     }
@@ -103,7 +136,7 @@ $(document).ready(function(){
     });
 
     /*save everything about army and siege in the assigned table*/
-    $('#assigned').on('click', '.saveArmy', function(){
+    $('#assigned-partial').on('click', '.saveArmy', function(){
         var row = $(this).parent().parent();
         var army = {};
         var siege = {};
@@ -138,7 +171,7 @@ $(document).ready(function(){
     });
 
     /*make the siege square cell turn into a dropdown*/
-    $('#assigned').on('click', '.square p', function(){
+    $('#assigned-partial').on('click', '.square p', function(){
         var options = $('#sieges tr td:nth-child(5)').text().trim().split(" ");
         options.push("DIR");
         var select = $(this).parent().find('.squareSelect');
@@ -153,7 +186,7 @@ $(document).ready(function(){
     });
 
     /*turn off dropdown in the siege square cell*/
-    $('#assigned').on('focusout', '.squareSelect', function(){
+    $('#assigned-partial').on('focusout', '.squareSelect', function(){
         var square = $(this).parent().find('p');
         var selected = $(this).val();
         square.text(selected);
@@ -164,7 +197,7 @@ $(document).ready(function(){
 
 
     /*make the orders square cell turn into a dropdown*/
-    $('#assigned').on('click', '.orders p', function(){
+    $('#assigned-partial').on('click', '.orders p', function(){
         var options = ['occupy', 'attack', 'blockade', 'siege'];
         var select = $(this).parent().find('select');
         $.each(options, function(index, option){
@@ -178,7 +211,7 @@ $(document).ready(function(){
     });
 
     /*turn off dropdown in the orders square cell*/
-    $('#assigned').on('focusout', '.ordersSelect', function(){
+    $('#assigned-partial').on('focusout', '.ordersSelect', function(){
         var orders = $(this).parent().find('p');
         var selected = $(this).val();
         orders.text(selected);
@@ -188,7 +221,7 @@ $(document).ready(function(){
     });
 
     /*adjust launch time when offset is changed*/
-    $('.siegetable').on('focusout', '.offsetInput', function(){
+    $('.container').on('focusout', '.offsetInput', function(){
         var match = $(this).val().match(offsetRegex);
         if(!match)
         {
@@ -215,7 +248,7 @@ $(document).ready(function(){
     });
 
     /*change army speed*/
-    $('.siegetable').on('click', '.speed p', function(){
+    $('.container').on('click', '.speed p', function(){
         var speed = $(this).text();
         var parent = $(this).parent();
         var speedInput = parent.find('.speedInput');
@@ -227,7 +260,7 @@ $(document).ready(function(){
     });
 
     /*focusing out of speed input turns it back into a table cell*/
-    $('.siegetable').on('blur', '.speedInput', function(){
+    $('.container').on('blur', '.speedInput', function(){
         var row = $(this).parent().parent();
         
         var speed = $(this).val();
@@ -255,7 +288,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#assigned').on('click', '.offset p', function(){
+    $('#assigned-partial').on('click', '.offset p', function(){
         var row = $(this).parent();
         var offset = $(this).text();
         var offsetInput = row.find('.offsetInput');
@@ -282,7 +315,7 @@ $(document).ready(function(){
 
 
     /*Clicking on the delete icon in the assigned table should delete army from siege*/
-    $('#assigned').on('click', '.removeArmy', function(){
+    $('#assigned-partial').on('click', '.removeArmy', function(){
         var id = $(this).parent().parent().attr('data');
         var siegeId = $(this).attr('data');
         console.log("Siegearmy ID:", id);
@@ -298,6 +331,36 @@ $(document).ready(function(){
         }
         })
     });
+
+    function getTroopTotals(square){
+        console.log(square);
+        var rows = $('#assigned').find('tr')
+            .filter(function(idx, val){
+            return $(this).find('.square p').text() == square
+        });
+        var results = {
+            "cav": sumFilteredCells("CAV", rows),
+            "inf": sumFilteredCells("INF", rows),
+            "bows": sumFilteredCells("BOW", rows),
+            "spears": sumFilteredCells("SP", rows)
+        }
+        console.log(results);
+        return results;
+    }
+
+    function sumFilteredCells(input, rows){
+        var arr = rows.filter(function(idx, val){
+            return $(this)
+                .find('td:nth-child(3)').text().startsWith(input);
+        })
+            .map(function(a){
+            return parseInt($(this).find('.troop_count').text());
+        })
+            .toArray();
+
+        result = arr.length == 0 ? 0 : arr.reduce(function(a, b){return a + b});
+        return result;
+    }
 
     function updateLaunchTimes(){
         var cells = $('#unassignedArmies tr, #assigned tr').find('.timer');

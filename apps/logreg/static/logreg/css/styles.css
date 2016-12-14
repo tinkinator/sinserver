@@ -131,11 +131,74 @@ a.btn{
 }
 
 /*Edit siege page*/
+#castle-toggle{
+    position: fixed;
+    top: 10px;
+    right: 7%;
+    width: 35px;
+    height: 35px;
+    z-index: 1;
+    background: url('../img/castle-icon.png'), linear-gradient(to bottom, rgba(144, 144, 146, 0.7) 0%, rgba(144, 144, 146, 0.7) 100%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: 3px solid rgba(144, 144, 146, 0.7);
+}
+    #castle-toggle:hover{
+        background: url('../img/castle-icon.png'), linear-gradient(to bottom, rgba(200, 200, 200, 0.7) 0%, rgba(200, 200, 200, 0.7) 100%);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        border: 3px solid rgba(200, 200, 200, 0.7);
+    }
+
+#layout{
+    position: fixed;
+    top: 5px;
+    right: 7%;
+    width: 210px;
+    height: 180px;
+    z-index: 1;
+}
+    .siege-plan{
+        width: 70px;
+        height: 60px;
+        display: inline-block;
+        border: 1px solid saddlebrown;
+        background-color: rgba(193,226,179,0.8);
+        padding: 2px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 10px;
+        vertical-align: top;
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+    }
+
+        .siege-plan p{
+            font-size: 10px;
+            font-weight: bold;
+            margin: 0;
+            font-family: "Roboto", sans-serif;
+        }
+
+    #DIR{
+        background: url('../img/castle-icon.png'), linear-gradient(to bottom, rgba(193,226,179,1) 0%, rgba(193,226,179,1) 100%);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+
 .mytable{
     background-color: rgba(255, 255, 255, 0.8);
-    font-size: 12px;
-}
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
 
+}
+    .mytable td {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+    }
     .mytable tbody tr:nth-child(odd){
         background-color: rgba(225, 225, 225, 0.8);
     }
@@ -163,6 +226,15 @@ a.btn{
         .chbox input{
             margin-top: 0;
         }
+
+.mytable.table.mytable-compact td{
+    padding: 2px;
+}
+
+.mytable.table.mytable-compact button{
+    padding: 3px 6px;
+    font-size: 9px;
+}
 
 #assigned td, #unassignedArmies td{
     padding-bottom: 3px;
@@ -292,8 +364,14 @@ span.glyphicon:last-of-type{
 }
 
 .dataTables_wrapper div.row:first-of-type{
-    font-size: 2em;
+    font-size: 1.5em;
 }
+    .dataTables_wrapper div.row:first-of-type select,
+    .dataTables_wrapper div.row:first-of-type input {
+        height: 20px;
+        line-height: 20px;
+        padding: 0 0 0 3px;
+    }
 
 /*
 Max width before this PARTICULAR table gets nasty
