@@ -31,7 +31,7 @@
                 -->{%if siege.NW%}N{%endif%}<!--
             --></td>
             <td class="landing">{{siege.landing_time}}</td>
-            <td>
+            <td nowrap>
                 <button id="{{ siege.id }}" class="edit btn btn-success">Edit</button>
                 <button id="{{ siege.id }}" class="delete btn btn-danger">Delete</button>
                 <button class="btn btn-info">View Schedule</button>
@@ -105,7 +105,7 @@
         <tr id="{{army.id}}">
             <td>{{army.player}}</td>
             <td>{{army.city}}</td>
-            <td>{{army.troop_type}}</td>
+            <td nowrap>{{army.troop_type}}</td>
             <td>{{army.troop_count}}</td>
             <td class="speed">
                 <p>{{army.speed}}</p>
@@ -128,7 +128,7 @@
                 {% endfor %}
             </td>
             <td class="timer" data-toggle="tooltip" data-placement="top">{{army.launch_time}}</td>
-            <td style="text-align: justify;"><span id="addSiege-{{army.id}}" class="addsiege glyphicon glyphicon-plus orange" data-toggle="tooltip" data-placement="top" title="Add army"></span>
+            <td nowrap style="text-align: justify;"><span id="addSiege-{{army.id}}" class="addsiege glyphicon glyphicon-plus orange" data-toggle="tooltip" data-placement="top" title="Add army"></span>
             <span class="glyphicon glyphicon-ok green saveArmy" data-toggle="tooltip" data-placement="top" title="Save army"></span></td>
         </tr>
         {% endfor %}

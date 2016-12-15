@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
     $('.sieges').on('click', '.delete', function () {
-        $.ajax({
+        if(confirm("Are you sure you want to delete this siege?")){
+             $.ajax({
             url: "/siege/" + $(this).attr('id'),
             type: 'DELETE',
             success: function (data, textStatus, xhr) {
@@ -12,6 +13,10 @@ $(document).ready(function() {
                 console.log(error);
             }
         });
+        }
+        else{
+            $(this).blur();
+        }
     });
 
 

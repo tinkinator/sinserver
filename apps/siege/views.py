@@ -46,40 +46,34 @@ def create_siege(request):
 
 
 @login_required(login_url='/', redirect_field_name=None)
-def armies(request):
-    armies = {
-    }
-    return render(request, 'siege/armies.html')
-
-
-@login_required(login_url='/', redirect_field_name=None)
 def edit_siege(request, siege):
     # Take the user to the edit siege page
     if request.method == 'GET':
+        context = {}
         inner_queryset = set(Siege_army.objects.all())
-        armies = Army.objects.filter(siege_army__isnull=True).values()
+        army_query = Army.objects.filter(siege_army__isnull=True)
         the_siege = model_to_dict(Siege.objects.get(id=siege))
+        context['armies'] = [(lambda x: model_to_dict(x))(x) for x in army_query]
 
-        for army in armies:
+        for idx, army in enumerate(context['armies']):
             print "%%%%%%%%%%%%, %s" % army
-            city = City.objects.get(id=army['city_id'])
+            city = City.objects.get(id=army['city'])
             army['city'] = city.name
-            army['player'] = Player.objects.get(id=army['player_id']).__str__()
+            army['player'] = Player.objects.get(id=army['player']).__str__()
             distance = calc_dist(city.x_coord, city.y_coord, the_siege['x_coord'], the_siege['y_coord'])
             army['dist'] = "%.3f" % (distance)
             travel_time = calc_time(army['speed'], distance)
             army['time'] = "%.3f" % (travel_time)
             launch_time = calc_launch_time(the_siege['landing_time'], travel_time)
             army['launch_time'] = datetime.strftime(launch_time, date_format)
+            army['troop_type'] = army_query[idx].get_troop_type_display()
         squares = [k for (k,v) in the_siege.items() if (v == True and k != "id")]
         the_siege['landing_time'] = datetime.strftime(the_siege['landing_time'], date_format)
-        context = {
-            'armies': armies,
-            'siege': the_siege,
-            'siege_armies': inner_queryset,
-            'squares': squares,
-            'orders': [x[0] for x in Siege_army.ORDERS]
-        }
+        context['siege'] = the_siege
+        context['siege_armies'] = inner_queryset
+        context['squares'] = squares
+        context['orders'] = [x[0] for x in Siege_army.ORDERS]
+
         print "Number of queries made: {0}".format(len(db.connection.queries))
         return render(request, 'siege/edit_siege.html', context)
     # Delete a siege and re-render manage.html
@@ -100,7 +94,7 @@ def edit_siege(request, siege):
             print form.errors
         return render(request, 'siege/manage.html', {'form': form})
 
-
+@login_required(login_url='/', redirect_field_name=None)
 def add_army_tosiege(request, siege):
     if request.method == 'GET':
         pass
@@ -120,7 +114,8 @@ def add_army_tosiege(request, siege):
         context = siege_tags.siege_armies_partial(partial_context)
         return render_to_response('siege/siege_armies_partial.html', context)
 
-    
+
+@login_required(login_url='/', redirect_field_name=None)
 def update_siegearmy(request, siege, army):
     if request.method == 'PUT':
         print "%%%%%%%%%%%%%%%%%%%%"
@@ -138,7 +133,7 @@ def update_siegearmy(request, siege, army):
         siege_army.delete()
         return HttpResponse("1 siege deleted")
 
-
+@login_required(login_url='/', redirect_field_name=None)
 def show_armies(request):
     context = {}
     player = request.user.username
@@ -152,11 +147,12 @@ def show_armies(request):
     context['armies'] = [(lambda x: model_to_dict(x))(x) for x in armies]
     for idx, army in enumerate(context['armies']):
         context['armies'][idx]['city'] = armies[idx].city.name
+        context['armies'][idx]['troop_type'] = armies[idx].get_troop_type_display()
     context['form'] = ArmyForm(label_suffix = "")
     print context
     return render(request, 'siege/armies.html', context)
 
-
+@login_required(login_url='/', redirect_field_name=None)
 def create_army(request):
     player = request.user.username
     if request.method == "POST":
@@ -172,7 +168,7 @@ def create_army(request):
         form = ArmyForm()
     return render(request, 'siege/armies.html', {'form': form, 'player': player})
 
-
+@login_required(login_url='/', redirect_field_name=None)
 def save_army(request, army):
     thearmy = Army.objects.get(id=int(army))
     print ("$$$$$$$$$$$$$$$$$$$$$$ POST data: %s" % request.POST)
@@ -204,6 +200,7 @@ def show_cities(request):
     return render(request, 'siege/towns.html', context)
 
 
+@login_required(login_url='/', redirect_field_name=None)
 def create_city(request):
     print "something else happened??????"
     player = request.user.username
@@ -220,6 +217,7 @@ def create_city(request):
         form = CityForm()
     return render(request, 'siege/armies.html', {'form': form, 'player': player})
 
+@login_required(login_url='/', redirect_field_name=None)
 def save_city(request, city):
     if request.method == "DELETE":
         thecity = City.objects.get(id=int(city))

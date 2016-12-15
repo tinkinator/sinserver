@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var editing = false;
     var mytable = $('.mytable').DataTable({
         "paging": false
     });
@@ -62,7 +63,7 @@ $(document).ready(function(){
         })
     })
 
-    $('.mytable').on('click', '.edit', function(){
+    $('.mytable').on('click', '.edit', function() {
         var form = $('#armyForm');
         var row = $(this).parent().parent();
         var id = row.attr('id');
@@ -75,8 +76,11 @@ $(document).ready(function(){
         form.find('#id_elite_type').val(row.find('.elite_type').text());
         form.find('#id_elite_divs_number').val(row.find('.elite_divs_number').text());
         form.find('#army-button').text("Save army");
-        form.append('<button class="btn btn-warning clear">Clear form</button>');
         form.attr('action', "/siege/armies/" + id);
+        if (!editing) {
+            form.append('<button class="btn btn-warning clear">Clear form</button>');
+            editing = true;
+        }
     })
 
     $('#armyForm').on('click', '.clear', function(){
@@ -84,5 +88,6 @@ $(document).ready(function(){
         $("#armyForm").attr('action', '/siege/armies/new');
         $("#armyForm").find('#army-button').text('Add Army');
         $(this).remove();
+        editing = false;
     })
 });

@@ -29,7 +29,7 @@ def siege_armies_partial(context):
         result[idx]['armyId'] = army.army_id.id
         result[idx]['siegearmyId'] = army.id
         result[idx]['speed'] = speed
-        result[idx]['troop_type'] = the_army.troop_type
+        result[idx]['troop_type'] = the_army.get_troop_type_display()
         result[idx]['dist'] = "%.3f" % (dist)
         result[idx]['troop_count'] = the_army.troop_count
         travel_time = calc_time(speed, dist)

@@ -11,9 +11,17 @@ $(document).ready(function(){
 
     /*Populate the siege stats div with graphics for each square*/
     function populateSiegeStats(){
-        var squares = $('#sieges .squares').text().trim().split(' ');
+        squares = []
+        var squarestring = $('#sieges .squares').text().trim()
+        if(squarestring.length > 0) {
+            $.each(squarestring.split(' '), function (index, val) {
+                squares.push(val);
+            });
+        }
         squares.push("DIR");
+        console.log(squares)
         $.each(squares, function(index, val){
+
             var troopCount = getTroopTotals(val);
             $('#layout').find('#' + val)
                 .html(
@@ -300,7 +308,8 @@ $(document).ready(function(){
 
     /*Deleting siege on the edit siege table should redirect back to the dashboard*/
     $('#sieges').on('click', '.delete', function () {
-        $.ajax({
+        if(confirm("Are you sure you want to delete this siege?")){
+             $.ajax({
             url: "/siege/" + $(this).attr('id'),
             type: 'DELETE',
             success: function (data, textStatus, xhr) {
@@ -311,6 +320,10 @@ $(document).ready(function(){
                 console.log(error);
             }
         });
+        }
+        else{
+            $(this).blur();
+        }
     });
 
 
@@ -339,10 +352,10 @@ $(document).ready(function(){
             return $(this).find('.square p').text() == square
         });
         var results = {
-            "cav": sumFilteredCells("CAV", rows),
-            "inf": sumFilteredCells("INF", rows),
-            "bows": sumFilteredCells("BOW", rows),
-            "spears": sumFilteredCells("SP", rows)
+            "cav": sumFilteredCells("Cavalry", rows),
+            "inf": sumFilteredCells("Infantry", rows),
+            "bows": sumFilteredCells("Bows", rows),
+            "spears": sumFilteredCells("Spears", rows)
         }
         console.log(results);
         return results;
@@ -351,7 +364,7 @@ $(document).ready(function(){
     function sumFilteredCells(input, rows){
         var arr = rows.filter(function(idx, val){
             return $(this)
-                .find('td:nth-child(3)').text().startsWith(input);
+                .find('td:nth-child(3)').text().endsWith(input);
         })
             .map(function(a){
             return parseInt($(this).find('.troop_count').text());

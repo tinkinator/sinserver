@@ -17,7 +17,7 @@
     <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
         <td>{{r.player}}</td>
         <td>{{r.city}}</td>
-        <td>{{r.troop_type}}</td>
+        <td nowrap>{{r.troop_type}}</td>
         <td class="troop_count">{{r.troop_count}}</td>
         <td class="speed"><p>{{r.speed}}</p><!--
         --><input type='text' class='speedInput' hidden="true">
@@ -32,7 +32,7 @@
         <td class="orders"><p>{{r.orders}}</p><!--
         --><select class="ordersSelect" hidden="true"></select></td>
         <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
-        <td>
+        <td nowrap>
             <span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-ok green saveArmy" data-toggle="tooltip" data-placement="top" title="Save"></span><!--
         --><span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-remove removeArmy red" data-toggle="tooltip" data-placement="top" title="Unassign army"</td>
     </tr>
