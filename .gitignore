@@ -10,3 +10,4 @@ deploy/
 allstatic
 cors-json-file.json
 deploy-gke.sh
+strategos-deployment-local.yaml
