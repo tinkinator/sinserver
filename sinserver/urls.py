@@ -22,6 +22,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^', include('apps.logreg.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^siege/', include('apps.siege.urls'),
-    )
+    url(r'^siege/', include('apps.siege.urls')),
+    url(r'^combats/', include('apps.combats.urls')),
 ]

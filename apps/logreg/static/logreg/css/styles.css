@@ -460,3 +460,40 @@ only screen and (max-width: 568px),
 li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
     color: #337ab7;
 }
+
+/*info cluster*/
+.info-cluster-1{
+    padding: 10px;
+    width: 60%;
+    background-color: rgba(245, 245, 245, 0.9);
+    -webkit-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    -moz-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+}
+    .info-cluster-row {
+        vertical-align: top;
+        margin-bottom: 5px;
+    }
+
+    .info-label{
+        display: inline-block;
+        font-weight: bold;
+        vertical-align: middle;
+        width: 35%;
+    }
+    .info-value{
+        vertical-align: top;
+        font-size: 16px;
+        display: inline-block;
+        width: 55%;
+    }
+
+    .info-value div button{
+        margin: 0 10px 5px 0;
+    }
+
+    #input-1, #input-2{
+        margin-bottom: 5px;
+    }
+
+
