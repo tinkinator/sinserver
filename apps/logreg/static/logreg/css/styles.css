@@ -469,6 +469,7 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
     -webkit-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
     -moz-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
     box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    overflow: hidden;
 }
     .info-cluster-row {
         vertical-align: top;
@@ -495,5 +496,7 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
     #input-1, #input-2{
         margin-bottom: 5px;
     }
+
+   
 
 

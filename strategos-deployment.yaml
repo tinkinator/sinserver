@@ -26,8 +26,8 @@ spec:
               value: "/data"
             - name: LOG_LEVEL
               value: "debug"
-            - name: COMBATS_PATH
-              value: "combats-service"
+            - name: GET_HOSTS_FROM
+              value: "dns"
           volumeMounts:
             - name: strategos-sqlite-data
               mountPath: /data

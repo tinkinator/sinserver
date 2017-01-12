@@ -7,8 +7,9 @@ from urlparse import urljoin
 
 
 # Create your views here.
-COMBATS_PATH = os.getenv('COMBATS_PATH', 'http://localhost:5000/')
-
+COMBATS_PORT = os.getenv('COMBATS_SERVICE_SERVICE_PORT', '5000')
+COMBATS_HOST = os.getenv('COMBATS_SERVICE_SERVICE_HOST', 'localhost')
+COMBATS_PATH = "http://" + COMBATS_HOST + ":" + COMBATS_PORT
 
 def health(request):
     r = requests.get(COMBATS_PATH)

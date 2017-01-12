@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
-from .models import Player
+import requests, json, os
 
+COMBATS_PORT = os.getenv('COMBATS_SERVICE_SERVICE_PORT', '5000')
+COMBATS_HOST = os.getenv('COMBATS_SERVICE_SERVICE_HOST', 'localhost')
+COMBATS_PATH = "http://" + COMBATS_HOST + ":" + COMBATS_PORT
 
 # Create your views here.
 def index(request):
@@ -35,9 +38,16 @@ def account(request):
     if request.method == "GET":
         user = request.user
         player = request.user.player
+        illy_id = str(player.illyId)
+        try:
+            data = requests.get(COMBATS_PATH + "/player/" + illy_id + "/apikey").json()
+            print data['key']
+            key = data['key']
+        except:
+            key = "error occurred"
         context['name'] = user.username
-        context['illyID'] = player.illyId
-        context['APIkey'] = "not implemented yet"
+        context['illyID'] = illy_id
+        context['APIkey'] = key
         context['email'] = user.email
     return render(request, 'logreg/account.html', context)
 
@@ -80,4 +90,20 @@ def email(request):
 
 @login_required(login_url='/', redirect_field_name=None)
 def apikey(request):
-    pass
+    if request.method == "POST":
+        payload = {}
+        payload['player'] = request.user.player.illyId
+        payload['key'] = request.POST['key']
+        req = requests.post(COMBATS_PATH+"/apikey/", data=json.dumps(payload))
+        if req.status_code == 200:
+            return redirect('account')
+        else:
+            user = request.user
+            player = request.user.player
+            context={}
+            context['name'] = user.username
+            context['illyID'] = player.illyId
+            context['APIkey'] = req.reason
+            context['email'] = user.email
+            return render(request, 'logreg/account.html', context)
+
