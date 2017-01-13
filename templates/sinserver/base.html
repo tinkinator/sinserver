@@ -15,18 +15,26 @@
       <script src="{% static 'logreg/js/bootstrap.min.js' %}"></script>
       <script src="{% static 'logreg/js/bootstrap-datetimepicker_utc.min.js' %}"></script>
       <script src="{% static 'siege/js/datatables.js' %}"></script>
+
   </head>
   <body>
+    <script>$(function(){
+        var url = window.location.pathname;
+        if(url.charAt(url.length-1) == '/'){
+        url = url.substring(0, url.length-1)
+      }
+        $('.mynav a[href="'+url+'"]').parent().addClass('active-green');
+    });</script>
     <div id="img-bg"><img id="bg" src="{% static 'logreg/img/sin_alchemy2.png'%}"></div>
     <div class="container">
     {%if user.is_authenticated %}
     <nav class="navbar navbar-default mynav">
         <ul class="nav-ul">
             <li><div class="nav-btn"><a href="/siege" class="btn navbar-btn">Siege</a></div></li>
-            <li><div class="nav-btn"><a href="/siege/armies" class="btn navbar-btn">My Armies</a></div></li>
-            <li><div class="nav-btn"><a href="/siege/cities" class="btn navbar-btn">My Towns</a></div></li>
-            <li><div class="nav-btn"><a href="#" class="btn navbar-btn">Alliance Stats</a></div></li>
-            <li><div class="nav-btn"><a href="/account" class="btn navbar-btn">My Account</a></div></li>
+            <li><div class="nav-btn"><a href="/siege/armies" class="btn navbar-btn">Armies</a></div></li>
+            <li><div class="nav-btn"><a href="/siege/cities" class="btn navbar-btn">Towns</a></div></li>
+            <li><div class="nav-btn"><a href="/combats/stats" class="btn navbar-btn">Alliance Stats</a></div></li>
+            <li><div class="nav-btn"><a href="/account" class="btn navbar-btn">Account</a></div></li>
             <li><div class="nav-btn"><a href="/logout" class="btn navbar-btn">Log Out</a></div></li>
         </ul>
     </nav>

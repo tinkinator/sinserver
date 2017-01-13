@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^cities$', views.show_cities, name='cities'),
     url(r'^cities/new$', views.create_city, name='newcity'),
     url(r'^cities/(?P<city>\d+)$', views.save_city, name="update_city"),
+    url(r'^(?P<siege>\d+)/schedule$', views.schedule, name="schedule"),
     )

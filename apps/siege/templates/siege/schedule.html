@@ -1,0 +1,32 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'siege/js/siege.js' %}"></script>
+    <h3>Schedule</h3>
+    <h4>Target: {{ target_player }}, {{ target_city }}. City coordinates: X: {{ target_x }}, Y: {{ target_y }} </h4>
+    <table id="assigned" class="mytable2 table-paginated table-compact table table-bordered">
+    <thead>
+        <th>Player</th>
+        <th>City</th>
+        <th>Troop type</th>
+        <th>Count</th>
+        <th>Speed</th>
+        <th>Square</th>
+        <th>Orders</th>
+        <th>Launch Time, UTC</th>
+    </thead>
+    {% for r in armies %}
+    <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
+        <td>{{r.player}}</td>
+        <td>{{r.city}}</td>
+        <td nowrap>{{r.troop_type}}</td>
+        <td class="troop_count">{{r.troop_count}}</td>
+        <td class="speed"><p>{{r.speed}}</p>
+        </td>
+        <td class="square"><p>{{r.siege_square}}</p></td>
+        <td class="orders"><p>{{r.orders}}</p></td>
+        <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+{% load staticfiles %}
+    <script src="{% static 'combats/js/combats.js' %}"></script>
+    <h1>300's Stats</h1>
+    <div class="info-cluster-2">
+        <div class="top-label">Troops</div>
+            <div class="info-square">
+                <div class="top-label">Spears</div>
+                <div class="mid-content">
+                    <ul>
+                        <li>T1: {{ SP_T1 }}</li>
+                        <li>T2: {{ SP_T2 }}</li>
+                        <li>Total: {{ Spear }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-square">
+                <div class="top-label">Bows</div>
+                <div class="mid-content">
+                    <ul>
+                        <li>T1: {{ BOW_T1 }}</li>
+                        <li>T2: {{ BOW_T2 }}</li>
+                        <li>Total: {{ Bow }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-square">
+                <div class="top-label">Infantry</div>
+                <div class="mid-content">
+                    <ul>
+                        <li>T1: {{ INF_T1 }}</li>
+                        <li>T2: {{ INF_T2 }}</li>
+                        <li>Total: {{ Infs }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-square">
+                <div class="top-label">Cavalry</div>
+                <div class="mid-content">
+                    <ul>
+                        <li>T1: {{ CAV_T1 }}</li>
+                        <li>T2: {{ CAV_T2 }}</li>
+                        <li>Total: {{ Cav }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-square">
+                <div class="top-label">Wall Engines</div>
+                <div class="mid-content">
+                    {{ wall }}
+                </div>
+            </div>
+            <div class="info-square">
+                <div class="top-label">Siege Engines</div>
+                <div class="mid-content">
+                    {{ siege }}
+                </div>
+            </div>
+    </div>
+{% endblock %}

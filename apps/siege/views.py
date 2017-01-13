@@ -233,6 +233,34 @@ def save_city(request, city):
             return redirect('cities')
         return render(request, 'siege/cities.html', {'form': form, 'player': player})
 
+@login_required(login_url='/', redirect_field_name=None)
+def schedule(request, siege):
+    the_siege = Siege.objects.get(id=int(siege))
+    q = Siege_army.objects.filter(siege_id=siege).select_related('siege_id', 'army_id')
+    print q
+    armies = [(lambda x: model_to_dict(x))(x) for x in q]
+    print armies
+    context = {}
+    context['target_player'] = the_siege.target_player
+    context['target_city'] = the_siege.target_city
+    context['target_x'] = the_siege.x_coord
+    context['target_y'] = the_siege.y_coord
+    for idx, army in enumerate(q):
+        the_army = army.army_id
+        armies[idx]['player'] = the_army.player.__str__()
+        armies[idx]['city'] = the_army.city.name
+        speed = the_army.speed
+        armies[idx]['speed'] = speed
+        armies[idx]['troop_type'] = the_army.get_troop_type_display()
+        armies[idx]['troop_count'] = the_army.troop_count
+        target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord)
+        dist = calc_dist(the_army.city.x_coord, the_army.city.y_coord, target[0], target[1])
+        travel_time = calc_time(speed, dist)
+        launch_time = calc_launch_time(the_siege.landing_time, travel_time, armies[idx]['time_offset'])
+        armies[idx]['launch_time'] = datetime.strftime(launch_time, date_format)
+    context['armies'] = armies
+    return render(request, 'siege/schedule.html', context)
+
 
 
 

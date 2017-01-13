@@ -227,11 +227,22 @@ a.btn{
             margin-top: 0;
         }
 
+.mytable2.table-bordered{
+    width: 100%;
+    background-color: rgb(250, 250, 250);
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+}
+    .mytable2 td {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+    }
+
 .mytable.table.mytable-compact td{
     padding: 2px;
 }
 
-.mytable.table.mytable-compact button{
+.mytable.table.mytable-compact button, .mytable.table.mytable-compact a.btn{
     padding: 3px 6px;
     font-size: 9px;
 }
@@ -285,6 +296,10 @@ td input{
 .input-error{
     border-color: red;
     background-color: #f2dede;
+}
+
+.active-green{
+    background-color: #7fc08b
 }
 
 .green{
@@ -413,8 +428,6 @@ only screen and (max-width: 568px),
             .mytable.table-bordered td p{
                 margin: 0;
             }
-
-
     .dataTables_wrapper div.row:first-of-type {
         font-size: 1.5em;
     }
@@ -462,6 +475,25 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
 }
 
 /*info cluster*/
+.info-cluster-2{
+    padding: 0;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    background-color: rgba(245, 245, 245, 0.9);
+    -webkit-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    -moz-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
+    overflow: hidden;
+}
+
 .info-cluster-1{
     padding: 10px;
     width: 60%;
@@ -497,6 +529,36 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
         margin-bottom: 5px;
     }
 
-   
+    .info-cluster-container{
+        margin: 10px auto;
+        padding: 0 10px;
+        min-height: 100px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .info-square{
+        flex-grow: 1;
+        display: inline-block;
+        height: 90px;
+        min-width: 70px;
+        background-color: #c7c7c7;
+        margin: 7px 5px 7px 5px;
+    }
+
+    .top-label{
+        width: 100%;
+        padding: 5px;
+        background-color: #7fc08b;
+        font-weight: bold;
+    }
+
+    .mid-content ul{
+        text-align: left;
+        list-style-type: none;
+        padding-left: 10px;
+    }
+
+
 
 
