@@ -90,11 +90,11 @@
             <td>{{ forloop.parentloop.counter }}</td>
             <td>{{ combat.Date }}</td>
             <td>{{ combat.Coords.X }}; {{ combat.Coords.Y }}</td>
-        <td>
+        <td class="player">
             {% for player, values in combat.Players.items %}
-                    <div style="font-size:13px; font-weight: bold;" class="{{ values.Role }}" data-toggle="tooltip" data-placement="top" title="{{ values.Role }}">{{ player }}</div>
+                    <div style="font-size:13px; font-weight: bold;" class="pl-name {{ values.Role }}" data-toggle="tooltip" data-placement="top" title="{{ values.Role }}">{{ player }} </div>
                 {% for unit, v in values.Units.items %}
-                    <div style="font-size:12px;">{{ v.Casualties }} / {{ v.Count }} <span>{{ unit }}</span></div>
+                    <div class="pl-stats" style="font-size:12px;"><span class="killed">{{ v.Casualties }}</span> / <span class="total">{{ v.Count }}</span> <span>{{ unit }}</span></div>
                     {% endfor %}
             {% endfor %}
         </td>

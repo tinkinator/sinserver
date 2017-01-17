@@ -597,6 +597,15 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
     color: #b92c28;
 }
 
+.skull-pic{
+    background: url("../img/skull_30px.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 20px;
+    height: 19px;
+    display: inline-block;
+}
 
 
 
