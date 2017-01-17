@@ -9,9 +9,9 @@
                 <div class="top-label">Spears</div>
                 <div class="mid-content">
                     <ul>
-                        <li>T1: {{ SP_T1 }}</li>
-                        <li>T2: {{ SP_T2 }}</li>
-                        <li>Total: {{ Spear }}</li>
+                        <li>T1: {{ troop_counts.SP_T1 }}</li>
+                        <li>T2: {{ troop_counts.SP_T2 }}</li>
+                        <li>Total: {{ troop_counts.Spear }}</li>
                     </ul>
                 </div>
             </div>
@@ -19,9 +19,9 @@
                 <div class="top-label">Bows</div>
                 <div class="mid-content">
                     <ul>
-                        <li>T1: {{ BOW_T1 }}</li>
-                        <li>T2: {{ BOW_T2 }}</li>
-                        <li>Total: {{ Bow }}</li>
+                        <li>T1: {{ troop_counts.BOW_T1 }}</li>
+                        <li>T2: {{ troop_counts.BOW_T2 }}</li>
+                        <li>Total: {{ troop_counts.Bow }}</li>
                     </ul>
                 </div>
             </div>
@@ -29,9 +29,9 @@
                 <div class="top-label">Infantry</div>
                 <div class="mid-content">
                     <ul>
-                        <li>T1: {{ INF_T1 }}</li>
-                        <li>T2: {{ INF_T2 }}</li>
-                        <li>Total: {{ Infs }}</li>
+                        <li>T1: {{ troop_counts.INF_T1 }}</li>
+                        <li>T2: {{ troop_counts.INF_T2 }}</li>
+                        <li>Total: {{ troop_counts.Infs }}</li>
                     </ul>
                 </div>
             </div>
@@ -39,23 +39,68 @@
                 <div class="top-label">Cavalry</div>
                 <div class="mid-content">
                     <ul>
-                        <li>T1: {{ CAV_T1 }}</li>
-                        <li>T2: {{ CAV_T2 }}</li>
-                        <li>Total: {{ Cav }}</li>
+                        <li>T1: {{ troop_counts.CAV_T1 }}</li>
+                        <li>T2: {{ troop_counts.CAV_T2 }}</li>
+                        <li>Total: {{ troop_counts.Cav }}</li>
                     </ul>
                 </div>
             </div>
             <div class="info-square">
                 <div class="top-label">Wall Engines</div>
                 <div class="mid-content">
-                    {{ wall }}
+                    {{ troop_counts.wall }}
                 </div>
             </div>
             <div class="info-square">
                 <div class="top-label">Siege Engines</div>
                 <div class="mid-content">
-                    {{ siege }}
+                    {{ troop_counts.siege }}
                 </div>
             </div>
     </div>
+    <div>
+        <h4>Weekly kills</h4>
+        {% for player, value in totals.items %}
+            <div class="info-cluster-1">{{ player }}
+            {% for k, v in value.items %}
+            <div class="info-cluster-row">{{ k }}:
+                {% for x, y in v.items  %}
+                    {% if x != 'Total' %}
+                    <div class="info-value1"><span class="orange">{{ y }}</span> {{ x }};</div>
+                    {% endif %}
+                    {% endfor %}
+                <div class="info-value"><b>Total: {{ v.Total }}</b></div>
+                </div>
+            {% endfor %}
+            </div>
+    {% endfor %}
+    </div>
+    <h4>Monthly top 10 combats</h4>
+    <table id="topTen" class="mytable1">
+        <thead>
+            <th>Place</th>
+            <th>Date</th>
+            <th>Coords</th>
+            <th>Details</th>
+            <th>Total Casualties</th>
+        </thead>
+        {% for item in topten %}
+        {% for k, combat in item.items %}
+        <tr>
+            <td>{{ forloop.parentloop.counter }}</td>
+            <td>{{ combat.Date }}</td>
+            <td>{{ combat.Coords.X }}; {{ combat.Coords.Y }}</td>
+        <td>
+            {% for player, values in combat.Players.items %}
+                    <div style="font-size:13px; font-weight: bold;" class="{{ values.Role }}" data-toggle="tooltip" data-placement="top" title="{{ values.Role }}">{{ player }}</div>
+                {% for unit, v in values.Units.items %}
+                    <div style="font-size:12px;">{{ v.Casualties }} / {{ v.Count }} <span>{{ unit }}</span></div>
+                    {% endfor %}
+            {% endfor %}
+        </td>
+        <td>{{ combat.Total }}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    </table>
 {% endblock %}

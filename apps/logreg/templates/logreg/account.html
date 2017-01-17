@@ -3,39 +3,39 @@
 {% load staticfiles %}
     <script src="{% static 'logreg/js/player.js' %}"></script>
     <h1>Player Settings</h1>
-    <div class="info-cluster-1">
-            <div class="info-cluster-row">
-                <div class="info-label">Username</div>
-                <div class="info-value">
+    <div class="info-cluster-1 w-60">
+            <div class="row info-cluster-row">
+                <div class="col-xs-6 info-label">Username</div>
+                <div class="col-xs-6 info-value">
                     <div>{{ name }}</div>
                     <div><button class="edit btn btn-warning" id="name">Change name</button></div>
                 </div>
             </div>
-            <div class="info-cluster-row">
-                <div class="info-label">Password</div>
-                <div class="info-value">
+            <div class="row info-cluster-row">
+                <div class="col-xs-6 info-label">Password</div>
+                <div class="col-xs-6 info-value">
                     <button class="edit btn btn-warning" id="passwd">Reset password</button>
                 </div>
             </div>
-            <div class="info-cluster-row">
-                <div class="info-label">Illyriad ID</div>
-                <div class="info-value">{{ illyID }}</div>
+            <div class="row info-cluster-row">
+                <div class="col-xs-6 info-label">Illyriad ID</div>
+                <div class="col-xs-6 info-value">{{ illyID }}</div>
             </div>
-            <div class="info-cluster-row">
-                <div class="info-label">Combat API key</div>
-                <div class="info-value"><div id="api-key">{{ APIkey }}</div>
+            <div class="row info-cluster-row">
+                <div class="col-xs-6 info-label">Combat API key</div>
+                <div class="col-xs-6 info-value"><div id="api-key">{{ APIkey }}</div>
                     <div><button class="edit btn btn-warning" id="key">Change key</button><button class="delete btn btn-danger">Delete key</button></div>
                 </div>
             </div>
-            <div class="info-cluster-row">
-                <div class="info-label">Email</div>
-                <div class="info-value"><span>{{ email }}</span>
+            <div class="row info-cluster-row">
+                <div class="col-xs-6 info-label">Email</div>
+                <div class="col-xs-6 info-value"><span>{{ email }}</span>
                     <div><button class="edit btn btn-warning" id="email">Change email</button></div>
                 </div>
             </div>
-            <div class="info-cluster-row" id="formDiv" style="display:none">
-                <div class="info-label">Label</div>
-                <div class="info-value">
+            <div class="row info-cluster-row" id="formDiv" style="display:none">
+                <div class="col-xs-6 info-label">Label</div>
+                <div class="col-xs-6 info-value">
                     <form id="playerForm" action="" method="POST">{% csrf_token %}
                         <div><input id="input-1" type="text"></div>
                         <div class="error" id="errors"></div>

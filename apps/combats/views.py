@@ -12,58 +12,120 @@ COMBATS_PORT = os.getenv('COMBATS_SERVICE_SERVICE_PORT', '5000')
 COMBATS_HOST = os.getenv('COMBATS_SERVICE_SERVICE_HOST', 'localhost')
 COMBATS_PATH = "http://" + COMBATS_HOST + ":" + COMBATS_PORT
 
+
 def health(request):
     r = requests.get(COMBATS_PATH)
     data = r.json()
     response = json.dumps(data)
     return HttpResponse(response, content_type='application/json')
 
+
 @login_required(login_url='/', redirect_field_name=None)
 def stats(request):
+
+    #get alliance total troop counts
     q = list(Army.objects.filter(player__alliance_name='300').values('troop_type').annotate(Sum('troop_count')))
     q2 = Army.objects.filter(player__alliance_name='300').values('siege_engines').aggregate(Sum('siege_engines'))
     q3 = Army.objects.filter(player__alliance_name='300').values('wall_engines').aggregate(Sum('wall_engines'))
-    result = {}
-    result['siege'] = q2['siege_engines__sum']
-    result['wall'] = q3['wall_engines__sum']
-    for d in q:
-        result[d['troop_type']] = d['troop_count__sum']
-    result[u'Spear'] = 0
-    result[u'Bow'] = 0
-    result[u'Infs'] = 0
-    result[u'Cav'] = 0
+    troop_counts = format_troop_counts(q)
+    troop_counts['siege'] = q2['siege_engines__sum']
+    troop_counts['wall'] = q3['wall_engines__sum']
 
-    if 'INF_T1' in result:
-        result['Infs'] += result['INF_T1']
+    #get last week's total kills
+    req1 = requests.get(COMBATS_PATH+'/combats/totals/300')
+    res1 = req1.json()
+    print "#########RESPONSE: %s ##########" % res1
+    totals = format_weekly_totals(res1)
+
+    #get last month's top 10 combats
+    req2 = requests.get(COMBATS_PATH+'/combats/topten/300')
+    res2 = req2.json()['list']
+    print "#########RESPONSE: %s ##########" % res2
+
+    context = {'troop_counts': troop_counts, 'totals': totals, 'topten': res2}
+    return render(request, 'combats/stats.html', context)
+
+@login_required(login_url='/', redirect_field_name=None)
+def update(request):
+    if request.user.is_staff():
+        r = requests.get(COMBATS_PATH+"/dbupd/")
+        data = r.json()
+        response = json.dumps(data)
+        return HttpResponse(response, content_type='application/json')
     else:
-        result[u'INF_T1'] = 0
-    if 'INF_T2' in result:
-        result['Infs'] += result['INF_T2']
+        return HttpResponse("You do not have permissions to view this page")
+
+# Formats the query results for alliance's troop counts.
+def format_troop_counts(q):
+    troop_counts={}
+    for d in q:
+        troop_counts[d['troop_type']] = d['troop_count__sum']
+    troop_counts[u'Spear'] = 0
+    troop_counts[u'Bow'] = 0
+    troop_counts[u'Infs'] = 0
+    troop_counts[u'Cav'] = 0
+
+    if 'INF_T1' in troop_counts:
+        troop_counts['Infs'] += troop_counts['INF_T1']
     else:
-        result[u'INF_T2'] = 0
-    if 'BOW_T1' in result:
-        result['Bow'] += result['BOW_T1']
+        troop_counts[u'INF_T1'] = 0
+    if 'INF_T2' in troop_counts:
+        troop_counts['Infs'] += troop_counts['INF_T2']
     else:
-        result[u'BOW_T1'] = 0
-    if 'BOW_T2' in result:
-        result['Bow'] += result['BOW_T2']
+        troop_counts[u'INF_T2'] = 0
+    if 'BOW_T1' in troop_counts:
+        troop_counts['Bow'] += troop_counts['BOW_T1']
     else:
-        result[u'BOW_T2'] = 0
-    if 'SP_T1' in result:
-        result['Spear'] += result['SP_T1']
+        troop_counts[u'BOW_T1'] = 0
+    if 'BOW_T2' in troop_counts:
+        troop_counts['Bow'] += troop_counts['BOW_T2']
     else:
-        result[u'SP_T1'] = 0
-    if 'SP_T2' in result:
-        result['Spear'] += result['SP_T2']
+        troop_counts[u'BOW_T2'] = 0
+    if 'SP_T1' in troop_counts:
+        troop_counts['Spear'] += troop_counts['SP_T1']
     else:
-        result[u'SP_T2'] = 0
-    if 'CAV_T1' in result:
-        result['Cav'] += result['CAV_T1']
+        troop_counts[u'SP_T1'] = 0
+    if 'SP_T2' in troop_counts:
+        troop_counts['Spear'] += troop_counts['SP_T2']
     else:
-        result[u'CAV_T1'] = 0
-    if 'CAV_T2' in result:
-        result['Cav'] += result['CAV_T2']
+        troop_counts[u'SP_T2'] = 0
+    if 'CAV_T1' in troop_counts:
+        troop_counts['Cav'] += troop_counts['CAV_T1']
     else:
-        result[u'CAV_T2'] = 0
-    print result
-    return render(request, 'combats/stats.html', result)
+        troop_counts[u'CAV_T1'] = 0
+    if 'CAV_T2' in troop_counts:
+        troop_counts['Cav'] += troop_counts['CAV_T2']
+    else:
+        troop_counts[u'CAV_T2'] = 0
+    return troop_counts
+
+
+# Formats the query results for weekly alliance totals.
+def format_weekly_totals(res):
+    totals = {}
+    for k, v in res.items():
+        n_players = len(v['Allies'])
+        for i in v['Allies']:
+            player = i
+            for key in v.keys():
+                if key != 'Allies':
+                    enemy = key
+                    for tally in v[enemy]:
+                        unit_type = tally['Unit type']
+                        casualties = int(tally['Casualties'])/n_players
+                        print "Player: %s, unit_type: %s, casualties: %s" %(player, unit_type, casualties)
+                        if player not in totals:
+                            totals[player] = {enemy: {unit_type: casualties}}
+                        else:
+                            if enemy not in totals[player]:
+                                totals[player][enemy] = {unit_type: casualties}
+                            else:
+                                if unit_type not in totals[player][enemy]:
+                                    totals[player][enemy][unit_type] = casualties
+                                else:
+                                    totals[player][enemy][unit_type] += casualties
+    for k, v in totals.items():
+        for enemy, tally in totals[k].items():
+            totals[k][enemy]['Total'] = reduce(lambda x, value: x + value, tally.values(), 0)
+    return totals
+

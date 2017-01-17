@@ -247,6 +247,24 @@ a.btn{
     font-size: 9px;
 }
 
+.mytable1{
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    white-space: nowrap;
+
+}
+    .mytable1 td, .mytable1 th{
+        padding: 6px;
+    }
+
+    .mytable1 tbody tr:nth-child(odd){
+        background-color: rgba(225, 225, 225, 0.8);
+    }
+
+
 #assigned td, #unassignedArmies td{
     padding-bottom: 3px;
     line-height: 1.1;
@@ -496,33 +514,45 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
 
 .info-cluster-1{
     padding: 10px;
-    width: 60%;
     background-color: rgba(245, 245, 245, 0.9);
     -webkit-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
     -moz-box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
     box-shadow: 9px 10px 13px -2px rgba(173,173,173,0.55);
     overflow: hidden;
+    margin-bottom: 5px;
 }
+    .info-cluster-1.w-60{
+        width: 60%;
+    }
+    .info-cluster-1.w-90{
+        width: 90%;
+    }
     .info-cluster-row {
         vertical-align: top;
         margin-bottom: 5px;
     }
 
     .info-label{
-        display: inline-block;
         font-weight: bold;
         vertical-align: middle;
         width: 35%;
+        height: 100%;
     }
     .info-value{
         vertical-align: top;
         font-size: 16px;
-        display: inline-block;
-        width: 55%;
+        padding-right: 5px;
+        width: 65%;
     }
 
     .info-value div button{
         margin: 0 10px 5px 0;
+    }
+
+    .info-value1{
+        vertical-align: top;
+        font-size: 16px;
+        display: inline-block;
     }
 
     #input-1, #input-2{
@@ -558,6 +588,15 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
         list-style-type: none;
         padding-left: 10px;
     }
+
+.Defender{
+    color: #337ab7;
+}
+
+.Attacker{
+    color: #b92c28;
+}
+
 
 
 
