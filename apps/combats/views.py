@@ -45,15 +45,41 @@ def stats(request):
     context = {'troop_counts': troop_counts, 'totals': totals, 'topten': res2}
     return render(request, 'combats/stats.html', context)
 
+
 @login_required(login_url='/', redirect_field_name=None)
 def update(request):
-    if request.user.is_staff():
+    if request.user.is_staff:
         r = requests.get(COMBATS_PATH+"/dbupd/")
         data = r.json()
         response = json.dumps(data)
         return HttpResponse(response, content_type='application/json')
     else:
         return HttpResponse("You do not have permissions to view this page")
+
+
+# View to administer players in the combats API
+@login_required(login_url='/', redirect_field_name=None)
+def admin(request):
+    if request.user.is_staff:
+        if request.method == "GET":
+            r = requests.get(COMBATS_PATH + "/players")
+            data = r.json()
+            return render(request, 'combats/admin.html', data)
+        elif request.method == "POST":
+            payload = json.dumps(request.POST)
+            print payload
+            r = requests.post(COMBATS_PATH+"/players/", payload)
+            print r.status_code
+            if r.status_code == 200:
+                return redirect('comadmin')
+            else:
+                r = requests.get(COMBATS_PATH + "/players")
+                data = r.json()
+                data['error'] = r.reason
+                return render(request, 'combats/admin.html', data)
+    else:
+        return HttpResponse("You do not have sufficient permissions to view this page")
+
 
 # Formats the query results for alliance's troop counts.
 def format_troop_counts(q):
@@ -128,4 +154,8 @@ def format_weekly_totals(res):
         for enemy, tally in totals[k].items():
             totals[k][enemy]['Total'] = reduce(lambda x, value: x + value, tally.values(), 0)
     return totals
+
+
+
+
 

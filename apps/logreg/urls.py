@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^account/password', views.password),
     url(r'^account/apikey', views.apikey),
     url(r'^account/email', views.email),
+
     )

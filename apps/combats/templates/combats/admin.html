@@ -1,0 +1,62 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+{% load staticfiles %}
+    <script src="{% static 'combats/js/admin.js' %}"></script>
+    <h4 Combats admin></h4>
+    <div class="row">
+        <div class="col-xs-6">
+            <h5>Players with API keys</h5>
+            <table class="mytable1">
+                <thead>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>API key</th>
+                    <th>Alliance</th>
+                    <th>Actions</th>
+                </thead>
+                {% for player in Players %}
+                <tr>
+                    <td>{{ player.Id }}</td>
+                    <td>{{ player.Name }}</td>
+                    <td style="display: inline-block; width:50px; overflow:hidden; text-overflow: ellipsis;">{{ player.Key }}</td>
+                    <td>{{ player.Alliance }}</td>
+                    <td>
+                        <span data="{{ player.Id }}" class="glyphicon glyphicon-pencil green saveArmy" data-toggle="tooltip" data-placement="top" title="Edit"></span><!--
+                --><span data="{{ player.Id }}" class="glyphicon glyphicon-remove removeArmy red" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-xs-6 form-sm">
+            <h5 id="player-header">Add Player</h5>
+            <form action="/combats/admin" method="POST" id="player-details">{%csrf_token%}
+                <div class="row spaced-row">
+                    <div class="col-xs-2"><label>ID:</label></div>
+                    <div class="col-xs-4"><input type="text" name="id" id="id_playerId"></div>
+                </div>
+                <div class="row spaced-row">
+                    <div class="col-xs-2"><label>Name:</label></div>
+                    <div class="col-xs-4"><input type="text" name="name" id="id_name"></div>
+                </div>
+                <div class="row spaced-row">
+                    <div class="col-xs-2"><label>Alliance:</label></div>
+                    <div class="col-xs-4"><input type="text" name="alliance" id="id_alliance"></div>
+                </div>
+                <div class="row spaced-row">
+                    <div class="col-xs-2"><label>API Key:</label></div>
+                    <div class="col-xs-4"><input type="text" name="api_key" id="id_key"></div>
+                </div>
+                <div class="row spaced-row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-4">
+                        <button class="submit btn btn-success" type="submit" id="formSubmit">Submit</button>
+                        {% if error != None %}
+                        <div class="error">{{ error }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

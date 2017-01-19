@@ -64,6 +64,7 @@ a.btn{
 }
     .nav-ul li{
         display: inline;
+        margin: 0;
     }
         .nav-ul li a{
             color: black;
@@ -76,6 +77,115 @@ a.btn{
     font-size: 0.5 em;
     color: red;
     margin: 0;
+}
+
+.spaced-row{
+    margin-bottom: 3px;
+}
+
+/*Tables*/
+.mytable{
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+
+}
+    .mytable td {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+    }
+    .mytable tbody tr:nth-child(odd){
+        background-color: rgba(225, 225, 225, 0.8);
+    }
+
+    .mytable input{
+        border: 1px solid rgb(166, 166, 166);
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        background-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        padding: 3px;
+
+    }
+
+    .chbox{
+        display: inline-block;
+        margin-right: 4px;
+    }
+        .chbox label{
+            display: block;
+            margin: 0;
+        }
+
+        .chbox input{
+            margin-top: 0;
+        }
+
+.mytable2.table-bordered{
+    width: 100%;
+    background-color: rgb(250, 250, 250);
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+}
+    .mytable2 td {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+    }
+
+.mytable.table.mytable-compact td{
+    padding: 2px;
+}
+
+.mytable.table.mytable-compact button, .mytable.table.mytable-compact a.btn{
+    padding: 3px 6px;
+    font-size: 9px;
+}
+
+.mytable1{
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    white-space: nowrap;
+
+}
+    .mytable1 td, .mytable1 th{
+        padding: 6px;
+    }
+
+    .mytable1 tbody tr:nth-child(odd){
+        background-color: rgba(225, 225, 225, 0.8);
+    }
+
+
+#assigned td, #unassignedArmies td{
+    padding-bottom: 3px;
+    line-height: 1.1;
+}
+
+#assigned th, #unassignedArmies th{
+    vertical-align: top;
+}
+
+.dataTables_wrapper div.row:first-of-type{
+    font-size: 1.5em;
+}
+    .dataTables_wrapper div.row:first-of-type select,
+    .dataTables_wrapper div.row:first-of-type input {
+        height: 20px;
+        line-height: 20px;
+        padding: 0 0 0 3px;
+    }
+
+/*Forms*/
+.form-sm div{
+    white-space: nowrap;
+}
+
+.form-sm label{
+    font-size: 0.9em;
 }
 
 /*Login page*/
@@ -188,91 +298,6 @@ a.btn{
         background-position: center;
         background-size: contain;
     }
-
-.mytable{
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 11px;
-    font-family: 'Roboto', sans-serif;
-
-}
-    .mytable td {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-    }
-    .mytable tbody tr:nth-child(odd){
-        background-color: rgba(225, 225, 225, 0.8);
-    }
-
-    .mytable input{
-        border: 1px solid rgb(166, 166, 166);
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-        background-color: white;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        padding: 3px;
-
-    }
-
-    .chbox{
-        display: inline-block;
-        margin-right: 4px;
-    }
-        .chbox label{
-            display: block;
-            margin: 0;
-        }
-
-        .chbox input{
-            margin-top: 0;
-        }
-
-.mytable2.table-bordered{
-    width: 100%;
-    background-color: rgb(250, 250, 250);
-    font-size: 11px;
-    font-family: 'Roboto', sans-serif;
-}
-    .mytable2 td {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-    }
-
-.mytable.table.mytable-compact td{
-    padding: 2px;
-}
-
-.mytable.table.mytable-compact button, .mytable.table.mytable-compact a.btn{
-    padding: 3px 6px;
-    font-size: 9px;
-}
-
-.mytable1{
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 11px;
-    font-family: 'Roboto', sans-serif;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    white-space: nowrap;
-
-}
-    .mytable1 td, .mytable1 th{
-        padding: 6px;
-    }
-
-    .mytable1 tbody tr:nth-child(odd){
-        background-color: rgba(225, 225, 225, 0.8);
-    }
-
-
-#assigned td, #unassignedArmies td{
-    padding-bottom: 3px;
-    line-height: 1.1;
-}
-
-#assigned th, #unassignedArmies th{
-    vertical-align: top;
-}
 
 .form-row{
     padding: 10px;
@@ -396,15 +421,6 @@ span.glyphicon:last-of-type{
     margin-right: 0;
 }
 
-.dataTables_wrapper div.row:first-of-type{
-    font-size: 1.5em;
-}
-    .dataTables_wrapper div.row:first-of-type select,
-    .dataTables_wrapper div.row:first-of-type input {
-        height: 20px;
-        line-height: 20px;
-        padding: 0 0 0 3px;
-    }
 
 /*
 Max width before this PARTICULAR table gets nasty
@@ -420,7 +436,6 @@ only screen and (max-width: 568px),
 		display: block;
         font-size: 13px;
 	}
-
 
 	/* Hide table headers (but not display: none;, for accessibility) */
 	thead tr {
@@ -589,6 +604,7 @@ li.picker-switch a.btn span.glyphicon, div.timepicker span.glyphicon{
         padding-left: 10px;
     }
 
+/*Combat stats*/
 .Defender{
     color: #337ab7;
 }

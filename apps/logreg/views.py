@@ -107,3 +107,4 @@ def apikey(request):
             context['email'] = user.email
             return render(request, 'logreg/account.html', context)
 
+
