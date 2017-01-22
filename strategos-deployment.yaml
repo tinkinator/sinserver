@@ -28,6 +28,8 @@ spec:
               value: "debug"
             - name: GET_HOSTS_FROM
               value: "dns"
+            - name: DEBUG_MODE
+              value: "False"
           volumeMounts:
             - name: strategos-sqlite-data
               mountPath: /data

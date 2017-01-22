@@ -1,0 +1,51 @@
+<div>
+    <h4>Weekly kills</h4>
+
+    {% for player, value in totals.Players.items %}
+        <div class="info-cluster-1">{{ player }}
+        {% for enemy, units in value.Enemies.items %}
+        <div class="info-cluster-row">{{ enemy }}:
+            {% for x, y in units.Units.items  %}
+                {% if x != 'Total' %}
+                <div class="info-value1"><span class="orange">{{ y }}</span> {{ x }};</div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="info-value"><b>Total: {{ value.Total }}</b></div>
+        </div>
+{% endfor %}
+</div>
+<h4>Monthly top 10 combats</h4>
+<table id="topTen" class="mytable1">
+    <thead>
+        <th>Place</th>
+        <th>Date</th>
+        <th>Coords</th>
+        <th>Participants</th>
+        <th>Details</th>
+        <th>Total Casualties</th>
+    </thead>
+    {% for item in topten %}
+    {% for k, combat in item.items %}
+    <tr>
+        <td>{{ forloop.parentloop.counter }}</td>
+        <td>{{ combat.Date }}</td>
+        <td>{{ combat.Coords.X }}; {{ combat.Coords.Y }}</td>
+    <td class="player">
+        {% for player, values in combat.Players.items %}
+                <div style="font-size:13px; margin-bottom:5px; font-weight: bold;" class="pl-name {{ values.Role }}" data-toggle="tooltip" data-placement="top" title="{{ values.Role }}">{{ player }} </div>
+        {% endfor %}
+    </td>
+    <td class="player">
+        {% for player, values in combat.Players.items %}
+            {% for unit, v in values.Units.items %}
+                <div class="pl-stats {{ values.Role }}" style="font-size:12px;"><span class="killed">{{ v.Casualties }}</span> / <span class="total">{{ v.Count }}</span> <span>{{ unit }}</span></div>
+                {% endfor %}
+        {% endfor %}
+    </td>
+    <td>{{ combat.Total }}</td>
+    </tr>
+    {% endfor %}
+{% endfor %}
+</table>
