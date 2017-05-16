@@ -195,27 +195,28 @@ def save_army(request, army):
 def show_cities(request):
     context = {}
     context['player'] = request.user.username
-    context['player_id'] = request.user.id
+    context['player_id'] = request.user.player.id
     context['cities'] = City.objects.filter(player=request.user.player)
     return render(request, 'siege/towns.html', context)
 
 
 @login_required(login_url='/', redirect_field_name=None)
 def create_city(request):
-    print "something else happened??????"
+    print "Creating a city, player: %s" % request.user.player.id
     player = request.user.username
+    print request.POST
     if request.method == "POST":
         form = CityForm(request.POST)
-        print "Form: {0}".format(form)
         if form.is_valid():
             city = form.save(commit=False)
+            print city
             city.save()
             return redirect('cities')
         else:
             print "Errors: {0}".format(form.errors)
     else:
         form = CityForm()
-    return render(request, 'siege/armies.html', {'form': form, 'player': player})
+    return render(request, 'siege/towns.html', {'form': form, 'player': player})
 
 @login_required(login_url='/', redirect_field_name=None)
 def save_city(request, city):
@@ -231,7 +232,7 @@ def save_city(request, city):
         if form.is_valid():
             form.save()
             return redirect('cities')
-        return render(request, 'siege/cities.html', {'form': form, 'player': player})
+        return render(request, 'siege/towns.html', {'form': form, 'player': player})
 
 @login_required(login_url='/', redirect_field_name=None)
 def schedule(request, siege):

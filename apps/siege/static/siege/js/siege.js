@@ -149,7 +149,7 @@ $(document).ready(function(){
         var army = {};
         var siege = {};
         var speed = row.find('.speed').text().trim();
-        var offset = row.find('.offsetInput').val();
+        var offset = row.find('.offset p').val();
         var valid = validateOffset(offset) && validateSpeed(speed);
         if(valid)
         {
