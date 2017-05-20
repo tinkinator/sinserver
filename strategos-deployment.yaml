@@ -17,6 +17,9 @@ spec:
           ports:
             - containerPort: 8080
               name: strategos
+          resources:
+            limits:
+              cpu: 80m
           env:
             - name: STATIC_URL
               value: "http://storage.googleapis.com/strategos/static/"
