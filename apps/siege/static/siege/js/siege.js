@@ -148,8 +148,8 @@ $(document).ready(function(){
         var row = $(this).parent().parent();
         var army = {};
         var siege = {};
-        var speed = row.find('.speed').text().trim();
-        var offset = row.find('.offset p').val();
+        var speed = row.find('.speed p').text().trim();
+        var offset = row.find('.offset p').text();
         var valid = validateOffset(offset) && validateSpeed(speed);
         if(valid)
         {
@@ -162,6 +162,7 @@ $(document).ready(function(){
             siege["siege_square"] = row.find(".square").text();
             siege["orders"] = row.find(".orders").text();
             console.log("posting: ", army);
+            row.find(".error").removeClass("error");
 
             $.when(
                 $.post("/siege/armies/"+id, army),
