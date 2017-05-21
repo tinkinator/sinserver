@@ -137,7 +137,7 @@ def update_siegearmy(request, siege, army):
 def show_armies(request):
     context = {}
     player = request.user.username
-    context['player_id'] = request.user.id
+    context['player_id'] = request.user.player.id
     context['player'] = player
     cities = [(lambda x: model_to_dict(x))(x) for x in City.objects.filter(player=request.user.player)]
     print "Cities: {0}".format(cities)
@@ -148,6 +148,7 @@ def show_armies(request):
     for idx, army in enumerate(context['armies']):
         context['armies'][idx]['city'] = armies[idx].city.name
         context['armies'][idx]['troop_type'] = armies[idx].get_troop_type_display()
+        context['armies'][idx]['troop_type_info'] = armies[idx].troop_type
     context['form'] = ArmyForm(label_suffix = "")
     print context
     return render(request, 'siege/armies.html', context)

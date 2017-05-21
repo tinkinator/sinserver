@@ -67,10 +67,11 @@ $(document).ready(function(){
         var form = $('#armyForm');
         var row = $(this).parent().parent();
         var id = row.attr('id');
+        var troop_type = row.find('.troop_type').attr('info');
         form.find('#id_city').val(row.find('.city').attr('data'));
-        form.find('#id_troop_type').val(row.find('.troop_type').text());
+        form.find('#id_troop_type option[value="'+troop_type+'"]').prop('selected', true);
         form.find('#id_troop_count').val(parseInt(row.find('.troop_count').text()));
-        form.find('#id_speed').val(parseInt(row.find('.speed').text()));
+        form.find('#id_speed').val(parseFloat(row.find('.speed').text()));
         form.find('#id_siege_engines').val(row.find('.siege_engines').text());
         form.find('#id_wall_engines').val(row.find('.wall_engines').text());
         form.find('#id_elite_type').val(row.find('.elite_type').text());

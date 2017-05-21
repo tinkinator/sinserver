@@ -22,7 +22,7 @@
             <td class="city" {% for c in cities %}
                 {% if c.name == army.city %}
                 data={{ c.id }} {% endif %} {% endfor %}>{{army.city}}</td>
-            <td class="troop_type">{{army.troop_type}}</td>
+            <td class="troop_type" info="{{ army.troop_type_info }}">{{army.troop_type}}</td>
             <td class="speed">{{army.speed}}</td>
             <td class="troop_count">{{army.troop_count}}</td>
             <td class="siege_engines">{{army.siege_engines}}</td>
@@ -30,8 +30,12 @@
             <td class="elite_divs_number">{{army.elite_divs_number}}</td>
             <td class="elite_type">{{army.elite_type}}</td>
             <td>
+                {% if not army.away %}
                 <button class="edit btn btn-success">Edit</button>
                 <button class="delete btn btn-danger">Delete</button>
+                {% else %}
+                <p>Away</p>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
