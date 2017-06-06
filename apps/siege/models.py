@@ -94,7 +94,6 @@ class Army(models.Model):
     )
 
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    #army_number = models.SmallIntegerField(default=0)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     troop_type = models.CharField(choices=TROOPTYPE_CHOICES, max_length = 100)
     troop_count = models.IntegerField(default=0)
@@ -103,6 +102,7 @@ class Army(models.Model):
     speed = models.DecimalField(max_digits=5, decimal_places=3,default=0)
     elite_divs_number = models.SmallIntegerField()
     elite_type = models.CharField(choices=ELITE_CHOICES, max_length = 100, blank=True)
+    away = models.BooleanField(default=False)
     def __str__(self):
         return str(self.player) + "-" + str(self.city) + "-" + str(self.troop_type) + "-" + str(self.troop_count)
     class Meta:
@@ -148,6 +148,7 @@ class Siege_army(models.Model):
     army_id = models.ForeignKey(Army, on_delete=models.CASCADE)
     siege_square = models.CharField(max_length = 3, choices=SQUARES)
     time_offset = models.IntegerField(default=0)
+    time_sent = models.DateTimeField(null=True)
     orders = models.CharField(choices=ORDERS, max_length = 30, default='occupy')
     class Meta:
         db_table = 'siege_armies'
