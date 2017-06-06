@@ -3,7 +3,9 @@
     {% load staticfiles %}
     <script src="{% static 'siege/js/siege.js' %}"></script>
     <h3>Schedule</h3>
-    <h4>Target: {{ target_player }}, {{ target_city }}. City coordinates: X: {{ target_x }}, Y: {{ target_y }} </h4>
+    <div class="solid-bg">
+        <h4>Target: {{ target_player }}, {{ target_city }}. City coordinates: X: {{ target_x }}, Y: {{ target_y }}, Landing time: {{ landing_time }} </h4>
+    </div>
     <table id="assigned" class="mytable2 table-paginated table-compact table table-bordered">
     <thead>
         <th>Player</th>

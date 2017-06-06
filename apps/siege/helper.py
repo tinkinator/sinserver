@@ -6,6 +6,7 @@ date_format = "%m-%d-%Y %H:%M:%S"
 date_format2 = "%"
 offset_regex = re.compile(r'(-?)(\d{2,}):([0-5][0-9]):([0-5][0-9])')
 
+
 def calc_dist(x1, y1, x2, y2):
     return sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
@@ -14,6 +15,8 @@ def calc_time(speed, distance):
     hours = float(distance) / float(speed)
     return hours
 
+
+# Parse time offset string
 def offset_fromstring(offset_string):
     offset = re.match(offset_regex, offset_string)
     offset_seconds = int(
@@ -23,6 +26,7 @@ def offset_fromstring(offset_string):
     if offset.group(1):
         offset_seconds = -offset_seconds
     return offset_seconds
+
 
 def calc_launch_time(landing_time, offset1, offset2=None):
     delta = timedelta(hours = offset1)

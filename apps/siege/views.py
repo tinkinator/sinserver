@@ -19,7 +19,7 @@ date_format = "%m-%d-%Y %H:%M:%S"
 date_format2 = "%"
 offset_regex = re.compile(r'(-?)(\d{2,}):([0-5][0-9]):([0-5][0-9])')
 
-
+# Landing page
 @login_required(login_url='/', redirect_field_name=None)
 def manage(request):
     sieges = {
@@ -29,6 +29,7 @@ def manage(request):
     return render(request, 'siege/manage.html', sieges)
 
 
+# Create new siege
 @login_required(login_url='/', redirect_field_name=None)
 def create_siege(request):
     if request.method == "POST":
@@ -45,6 +46,7 @@ def create_siege(request):
     return render(request, 'siege/manage.html', {'form': form})
 
 
+# Render siege editing page
 @login_required(login_url='/', redirect_field_name=None)
 def edit_siege(request, siege):
     # Take the user to the edit siege page
@@ -94,6 +96,8 @@ def edit_siege(request, siege):
             print form.errors
         return render(request, 'siege/manage.html', {'form': form})
 
+
+# Add army to siege
 @login_required(login_url='/', redirect_field_name=None)
 def add_army_tosiege(request, siege):
     if request.method == 'GET':
@@ -115,6 +119,7 @@ def add_army_tosiege(request, siege):
         return render_to_response('siege/siege_armies_partial.html', context)
 
 
+# Update siege army
 @login_required(login_url='/', redirect_field_name=None)
 def update_siegearmy(request, siege, army):
     if request.method == 'PUT':
@@ -133,6 +138,8 @@ def update_siegearmy(request, siege, army):
         siege_army.delete()
         return HttpResponse("1 siege deleted")
 
+
+# Get armies and render armies page
 @login_required(login_url='/', redirect_field_name=None)
 def show_armies(request):
     context = {}
@@ -153,6 +160,8 @@ def show_armies(request):
     print context
     return render(request, 'siege/armies.html', context)
 
+
+# Create new army
 @login_required(login_url='/', redirect_field_name=None)
 def create_army(request):
     player = request.user.username
@@ -169,6 +178,8 @@ def create_army(request):
         form = ArmyForm()
     return render(request, 'siege/armies.html', {'form': form, 'player': player})
 
+
+# Update army
 @login_required(login_url='/', redirect_field_name=None)
 def save_army(request, army):
     thearmy = Army.objects.get(id=int(army))
@@ -192,6 +203,7 @@ def save_army(request, army):
         return HttpResponse("1 army deleted")
 
 
+# Get cities and render cities page
 @login_required(login_url='/', redirect_field_name=None)
 def show_cities(request):
     context = {}
@@ -201,6 +213,7 @@ def show_cities(request):
     return render(request, 'siege/towns.html', context)
 
 
+# Create new city
 @login_required(login_url='/', redirect_field_name=None)
 def create_city(request):
     print "Creating a city, player: %s" % request.user.player.id
@@ -219,6 +232,8 @@ def create_city(request):
         form = CityForm()
     return render(request, 'siege/towns.html', {'form': form, 'player': player})
 
+
+# Update city
 @login_required(login_url='/', redirect_field_name=None)
 def save_city(request, city):
     if request.method == "DELETE":
@@ -235,6 +250,8 @@ def save_city(request, city):
             return redirect('cities')
         return render(request, 'siege/towns.html', {'form': form, 'player': player})
 
+
+# Render siege schedule page
 @login_required(login_url='/', redirect_field_name=None)
 def schedule(request, siege):
     the_siege = Siege.objects.get(id=int(siege))
@@ -247,6 +264,7 @@ def schedule(request, siege):
     context['target_city'] = the_siege.target_city
     context['target_x'] = the_siege.x_coord
     context['target_y'] = the_siege.y_coord
+    context['landing_time'] = datetime.strftime(the_siege.landing_time, date_format)
     for idx, army in enumerate(q):
         the_army = army.army_id
         armies[idx]['player'] = the_army.player.__str__()

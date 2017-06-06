@@ -42,6 +42,11 @@ a.btn{
     position: relative;
 }
 
+.solid-bg{
+    padding: 5px;
+    background-color: #fafafa;
+}
+
 .errorlist{
     list-style: none;
     margin: 0;
