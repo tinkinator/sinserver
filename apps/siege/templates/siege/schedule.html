@@ -16,6 +16,7 @@
         <th>Square</th>
         <th>Orders</th>
         <th>Launch Time, UTC</th>
+        <th>Actual launched time</th>
     </thead>
     {% for r in armies %}
     <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
@@ -28,6 +29,10 @@
         <td class="square"><p>{{r.siege_square}}</p></td>
         <td class="orders"><p>{{r.orders}}</p></td>
         <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
+        <td class="sent">
+            <input/>
+             <span data="{{ mydict.siegeId }}" class="glyphicon glyphicon-ok green saveArmy" data-toggle="tooltip" data-placement="top" title="Save"></span>
+        </td>
     </tr>
     {% endfor %}
 </table>
