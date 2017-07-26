@@ -41,20 +41,32 @@ def calc_launch_time(landing_time, offset1, offset2=None):
 
 def calculate_target_coord(square, x, y):
     if square == "N":
-        return (x, y-1)
+        y_coord = int((abs(y) - 1) * y / abs(y))
+        return (x, y_coord)
     elif square == "NE":
-        return (x+1, y-1)
+        y_coord = int((abs(y) - 1) * y / abs(y))
+        x_coord = int((abs(x) + 1) * x / abs(x))
+        return (x_coord, y_coord)
     elif square == "E":
-        return (x+1, y)
+        x_coord = int((abs(x) + 1) * x / abs(x))
+        return (x_coord, y)
     elif square == "SE":
-        return (x+1, y+1)
+        x_coord = int((abs(x) + 1) * x / abs(x))
+        y_coord = int((abs(y) + 1) * y / abs(y))
+        return (x_coord, y_coord)
     elif square == "S":
-        return (x, y+1)
+        y_coord = int((abs(y) + 1) * y / abs(y))
+        return (x, y_coord)
     elif square == "SW":
-        return (x-1, y+1)
+        x_coord = int((abs(x) - 1) * x / abs(x))
+        y_coord = int((abs(y) + 1) * y / abs(y))
+        return (x_coord, y_coord)
     elif square == "W":
-        return (x-1, y)
+        x_coord = int((abs(x) - 1) * x / abs(x))
+        return (x_coord, y)
     elif square == "NW":
-        return (x-1, y-1)
+        x_coord = int((abs(x) - 1) * x / abs(x))
+        y_coord = int((abs(y) - 1) * y / abs(y))
+        return (x_coord, y_coord)
     else:
         return (x, y)
