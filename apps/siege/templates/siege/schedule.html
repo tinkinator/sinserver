@@ -6,12 +6,13 @@
     <div class="solid-bg">
         <h4>Target: {{ target_player }}, {{ target_city }}. City coordinates: X: {{ target_x }}, Y: {{ target_y }}, Landing time: {{ landing_time }} </h4>
     </div>
-    <table id="assigned" class="mytable2 table-paginated table-compact table table-bordered">
+    <table id="schedule" class="mytable2 table-paginated table-compact table table-bordered">
     <thead>
         <th>Player</th>
         <th>City</th>
         <th>Troop type</th>
         <th>Count</th>
+        <th>Engines</th>
         <th>Speed</th>
         <th>Square</th>
         <th>Orders</th>
@@ -23,6 +24,7 @@
         <td>{{r.city}}</td>
         <td nowrap>{{r.troop_type}}</td>
         <td class="troop_count">{{r.troop_count}}</td>
+        <td>{{r.engines}}</td>
         <td class="speed"><p>{{r.speed}}</p>
         </td>
         <td class="square"><p>{{r.siege_square}}</p></td>

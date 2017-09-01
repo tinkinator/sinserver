@@ -274,11 +274,13 @@ def schedule(request, siege):
         armies[idx]['speed'] = speed
         armies[idx]['troop_type'] = the_army.get_troop_type_display()
         armies[idx]['troop_count'] = the_army.troop_count
-        target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord)
+        orders = army.orders
+        target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord, orders)
         dist = calc_dist(the_army.city.x_coord, the_army.city.y_coord, target[0], target[1])
         travel_time = calc_time(speed, dist)
         launch_time = calc_launch_time(the_siege.landing_time, travel_time, armies[idx]['time_offset'])
         armies[idx]['launch_time'] = datetime.strftime(launch_time, date_format)
+        armies[idx]['engines'] = "%s/%s" % (the_army.siege_engines, the_army.wall_engines)
     context['armies'] = armies
     return render(request, 'siege/schedule.html', context)
 

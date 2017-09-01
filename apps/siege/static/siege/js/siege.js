@@ -1,7 +1,17 @@
 $(document).ready(function(){
 
-    var tableUnassigned = $('#unassignedArmies').DataTable();
-    var tableAssigned = $('#assigned').DataTable();
+    var tableUnassigned = $('#unassignedArmies').DataTable({
+        "order": [[7, "asc"]],
+        "lengthMenu": [[50, -1], [50, "All"]]
+    });
+    var tableAssigned = $('#assigned').DataTable({
+        "order": [[11, "asc"]],
+        "lengthMenu": [[50, -1], [50, "All"]]
+    });
+    var tableSchedule = $('#schedule').DataTable({
+        "order": [[8, "asc"]],
+        "lengthMenu": [[50, -1], [50, "All"]]
+    })
     /*Regexes*/
     var offsetRegex = /(-?)([\d]{2,}):([0-5][0-9]):([0-5][0-9])/;
     var dateRegex = /(\d{2})\-(\d{2})\-(\d{4})\s(\d{2}):(\d{2}):(\d{2})/;
