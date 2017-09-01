@@ -4,6 +4,7 @@
         <th>City</th>
         <th>Troop type</th>
         <th>Count</th>
+        <th>Engines</th>
         <th>Speed</th>
         <th>Distance to Target</th>
         <th>Travel Time</th>
@@ -17,8 +18,9 @@
     <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
         <td>{{r.player}}</td>
         <td>{{r.city}}</td>
-        <td nowrap>{{r.troop_type}}</td>
+        <td>{{r.troop_type}}</td>
         <td class="troop_count">{{r.troop_count}}</td>
+        <td nowrap>{{r.engines}}</td>
         <td class="speed"><p>{{r.speed}}</p><!--
         --><input type='text' class='speedInput' hidden="true">
         </td>

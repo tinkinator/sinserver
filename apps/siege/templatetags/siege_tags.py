@@ -23,7 +23,8 @@ def siege_armies_partial(context):
         result[idx]['city']= the_army.city.name
         origin_x = the_army.city.x_coord
         origin_y = the_army.city.y_coord
-        target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord)
+        orders = army.orders
+        target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord, orders)
         dist = calc_dist(origin_x, origin_y, target[0], target[1])
         speed = the_army.speed
         result[idx]['armyId'] = army.army_id.id
@@ -32,6 +33,7 @@ def siege_armies_partial(context):
         result[idx]['troop_type'] = the_army.get_troop_type_display()
         result[idx]['dist'] = "%.3f" % (dist)
         result[idx]['troop_count'] = the_army.troop_count
+        result[idx]['engines'] = "%s/%s" % (the_army.siege_engines, the_army.wall_engines)
         travel_time = calc_time(speed, dist)
         result[idx]['travel_time'] = "%.3f" % (travel_time)
         launch_time = calc_launch_time(the_siege.landing_time, travel_time, result[idx]['time_offset'])

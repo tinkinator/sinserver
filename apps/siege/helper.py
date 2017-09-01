@@ -39,34 +39,72 @@ def calc_launch_time(landing_time, offset1, offset2=None):
     return landing_time - delta
 
 
-def calculate_target_coord(square, x, y):
+def calculate_target_coord(square, x, y, orders):
+    if orders == "blockade" or orders == "siege":
+        return (x, y)
     if square == "N":
-        y_coord = int((abs(y) - 1) * y / abs(y))
+        if y != 0:
+            y_coord = int((abs(y) - 1) * y / abs(y))
+        else:
+            y_coord = -1
         return (x, y_coord)
     elif square == "NE":
-        y_coord = int((abs(y) - 1) * y / abs(y))
-        x_coord = int((abs(x) + 1) * x / abs(x))
+        if y != 0:
+            y_coord = int((abs(y) - 1) * y / abs(y))
+        else:
+            y_coord = -1
+        if x != 0:
+            x_coord = int((abs(x) + 1) * x / abs(x))
+        else:
+            x_coord = 1
         return (x_coord, y_coord)
     elif square == "E":
-        x_coord = int((abs(x) + 1) * x / abs(x))
+        if x != 0:
+            x_coord = int((abs(x) + 1) * x / abs(x))
+        else:
+            x_coord = 1
         return (x_coord, y)
     elif square == "SE":
-        x_coord = int((abs(x) + 1) * x / abs(x))
-        y_coord = int((abs(y) + 1) * y / abs(y))
+        if x != 0:
+            x_coord = int((abs(x) + 1) * x / abs(x))
+        else:
+            x_coord = 1
+        if y != 0:
+            y_coord = int((abs(y) + 1) * y / abs(y))
+        else:
+            y_coord = 1
         return (x_coord, y_coord)
     elif square == "S":
-        y_coord = int((abs(y) + 1) * y / abs(y))
+        if y != 0:
+            y_coord = int((abs(y) + 1) * y / abs(y))
+        else:
+            y_coord = 1
         return (x, y_coord)
     elif square == "SW":
-        x_coord = int((abs(x) - 1) * x / abs(x))
-        y_coord = int((abs(y) + 1) * y / abs(y))
+        if x != 0:
+            x_coord = int((abs(x) - 1) * x / abs(x))
+        else:
+            x_coord = -1
+        if y != 0:
+            y_coord = int((abs(y) + 1) * y / abs(y))
+        else:
+            y_coord = 1
         return (x_coord, y_coord)
     elif square == "W":
-        x_coord = int((abs(x) - 1) * x / abs(x))
+        if x != 0:
+            x_coord = int((abs(x) - 1) * x / abs(x))
+        else:
+            x_coord = -1
         return (x_coord, y)
     elif square == "NW":
-        x_coord = int((abs(x) - 1) * x / abs(x))
-        y_coord = int((abs(y) - 1) * y / abs(y))
+        if x != 0:
+            x_coord = int((abs(x) - 1) * x / abs(x))
+        else:
+            x_coord = -1
+        if y != 0:
+            y_coord = int((abs(y) - 1) * y / abs(y))
+        else:
+            y = -1
         return (x_coord, y_coord)
     else:
         return (x, y)

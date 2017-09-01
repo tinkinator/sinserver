@@ -69,6 +69,7 @@ def edit_siege(request, siege):
             launch_time = calc_launch_time(the_siege['landing_time'], travel_time)
             army['launch_time'] = datetime.strftime(launch_time, date_format)
             army['troop_type'] = army_query[idx].get_troop_type_display()
+            army['engines'] = "%s/%s" % (army_query[idx].siege_engines, army_query[idx].wall_engines)
         squares = [k for (k,v) in the_siege.items() if (v == True and k != "id")]
         the_siege['landing_time'] = datetime.strftime(the_siege['landing_time'], date_format)
         context['siege'] = the_siege
