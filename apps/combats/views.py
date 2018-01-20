@@ -1,9 +1,12 @@
+from datetime import date
+from time import strftime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 import json, os, requests
 from django.db.models import Sum
 from ..siege.models import (Siege, Siege_army, City, Army, SiegeForm, Player, ArmyForm, CityForm)
+from ..siege.helper import *
 from urlparse import urljoin
 
 
@@ -27,6 +30,8 @@ def stats(request):
     q = list(Army.objects.filter(player__alliance_name='300').values('troop_type').annotate(Sum('troop_count')))
     q2 = Army.objects.filter(player__alliance_name='300').values('siege_engines').aggregate(Sum('siege_engines'))
     q3 = Army.objects.filter(player__alliance_name='300').values('wall_engines').aggregate(Sum('wall_engines'))
+    q4 = Siege.objects.all().values()
+    print q4
     troop_counts = format_troop_counts(q)
     troop_counts['siege'] = q2['siege_engines__sum']
     troop_counts['wall'] = q3['wall_engines__sum']
@@ -41,9 +46,31 @@ def stats(request):
     res2 = req2.json()['list']
     print "#########RESPONSE 2: %s ##########" % res2
 
+    #get combat stats for all current sieges
+    if len(q4) > 0:
+        responses = []
+        for siege in q4:
+            coordinates = []
+            startTime = siege['landing_time'].strftime("%Y-%m-%d 00:00:00")
+            x = siege['x_coord']
+            y = siege['y_coord']
+            player = siege['target_player']
+            city = siege['target_city']
+            squares = [square for square, value in siege.items() if value == True]
+            for sq in squares:
+                coord = calculate_target_coord(sq, x, y, "occupy")
+                coordinates.append([str(coord[0]), str(coord[1]), sq])
+            req = {"start": startTime, "coordinates": coordinates}
+            response = requests.post(COMBATS_PATH+'/combats/sieges/', json=req)
+            print "REQUEST: %s, RESPONSE: %s" % (req, response.json())
+            responses.append(response.json())
+        print responses
+
     context = {'troop_counts': troop_counts, 'totals': totals, 'topten': res2}
     return render(request, 'combats/stats.html', context)
 
+# @login_required(login_url='/', redirect_field_name=None)
+# def enemycounts(request):
 
 @login_required(login_url='/', redirect_field_name=None)
 def update(request):
