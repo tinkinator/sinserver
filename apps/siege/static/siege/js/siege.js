@@ -64,7 +64,7 @@ $(document).ready(function(){
         var $headers = $(this).closest('table').find('th');
         /*add all the cell contents from the row to payload*/
         $('#'+id).find('td').each(function(idx) {
-            if(idx == 7) {
+            if(idx == 8) {
                 offsetVal = ($(this).find('input').val());
                 error = !validateOffset(offsetVal);
                 if(error) {
@@ -77,7 +77,7 @@ $(document).ready(function(){
                     payLoad["Offset"] = offsetVal;
                 }
             }
-            else if (idx == 8 || idx == 9){
+            else if (idx == 9 || idx == 10){
                 payLoad[$($headers[idx]).text()] = $(this).find('select').val();
             }
             else{

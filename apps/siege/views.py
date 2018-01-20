@@ -111,7 +111,7 @@ def add_army_tosiege(request, siege):
             square = request.POST["Square"]
         the_siege = Siege.objects.get(id=int(siege))
         the_army = Army.objects.get(id=int(request.POST["armyId"]))
-        newSiegeArmy = Siege_army(siege_id=the_siege, army_id=the_army, siege_square=square, time_offset=offset, orders=request.POST["Orders"])
+        newSiegeArmy = Siege_army(siege_id=the_siege, army_id=the_army, player_id=the_army.player, siege_square=square, time_offset=offset, orders=request.POST["Orders"])
         newSiegeArmy.save()
         partial_context = {}
         partial_context['siege'] = {}
@@ -257,9 +257,7 @@ def save_city(request, city):
 def schedule(request, siege):
     the_siege = Siege.objects.get(id=int(siege))
     q = Siege_army.objects.filter(siege_id=siege).select_related('siege_id', 'army_id')
-    print q
     armies = [(lambda x: model_to_dict(x))(x) for x in q]
-    print armies
     context = {}
     context['target_player'] = the_siege.target_player
     context['target_city'] = the_siege.target_city
@@ -283,6 +281,46 @@ def schedule(request, siege):
         armies[idx]['engines'] = "%s/%s" % (the_army.siege_engines, the_army.wall_engines)
     context['armies'] = armies
     return render(request, 'siege/schedule.html', context)
+
+# Render player's siege schedule page
+@login_required(login_url='/', redirect_field_name=None)
+def player_schedule(request):
+    q = Siege_army.objects.filter(player_id=request.user.player.id).select_related('player_id', 'army_id')
+    sieges = Siege.objects.all().values()
+    armies = [(lambda x: model_to_dict(x))(x) for x in q]
+    siegedict = {}
+    for siege in sieges:
+        siegedict[siege['id']] = siege
+        siegedict[siege['id']]['armies'] = []
+        siegedict[siege['id']]['name'] = siege['target_player'] + ", " + siege['target_city'] + ", X:" + str(siege['x_coord']) + ", Y:" + str(siege['y_coord'])
+    context = {}
+    print(siegedict)
+    for idx, army in enumerate(q):
+        the_army = army.army_id
+        new_army = {}
+        siege_idx = armies[idx]['siege_id']
+        new_army['player'] = the_army.player.__str__()
+        new_army['city'] = the_army.city.name
+        speed = the_army.speed
+        siege = siegedict[siege_idx]
+        new_army['speed'] = speed
+        new_army['troop_type'] = the_army.get_troop_type_display()
+        new_army['troop_count'] = the_army.troop_count
+        siege_x = siege['x_coord']
+        siege_y = siege['y_coord']
+        landing_time = siege['landing_time']
+        new_army['orders'] = army.orders
+        new_army['siege_square'] = army.get_siege_square_display()
+        target = calculate_target_coord(army.siege_square, siege_x, siege_y, army.orders)
+        dist = calc_dist(the_army.city.x_coord, the_army.city.y_coord, target[0], target[1])
+        travel_time = calc_time(speed, dist)
+        launch_time = calc_launch_time(landing_time, travel_time, armies[idx]['time_offset'])
+        new_army['launch_time'] = datetime.strftime(launch_time, date_format)
+        new_army['engines'] = "%s/%s" % (the_army.siege_engines, the_army.wall_engines)
+        siegedict[siege_idx]['armies'].append(new_army)
+    print siegedict
+    context['sieges'] = siegedict
+    return render(request, 'siege/myschedule.html', context)
 
 
 

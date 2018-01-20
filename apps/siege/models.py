@@ -146,6 +146,7 @@ class Siege_army(models.Model):
 
     siege_id = models.ForeignKey(Siege, on_delete=models.CASCADE)
     army_id = models.ForeignKey(Army, on_delete=models.CASCADE)
+    player_id = models.ForeignKey(Player, on_delete=models.CASCADE)
     siege_square = models.CharField(max_length = 3, choices=SQUARES)
     time_offset = models.IntegerField(default=0)
     time_sent = models.DateTimeField(null=True)

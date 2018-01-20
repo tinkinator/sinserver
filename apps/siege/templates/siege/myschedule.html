@@ -1,0 +1,38 @@
+{% extends "sinserver/base.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'siege/js/siege.js' %}"></script>
+    <h3>My Schedule</h3>
+    {% for siege in sieges.values %}
+    <div class="solid-bg">
+        <h4>{{ siege.name }}, Landing time: {{ siege.landing_time }} </h4>
+    </div>
+    <table id="schedule" class="mytable2 table-compact table table-bordered">
+    <thead>
+        <th>Player</th>
+        <th>City</th>
+        <th>Troop type</th>
+        <th>Count</th>
+        <th>Engines</th>
+        <th>Speed</th>
+        <th>Square</th>
+        <th>Orders</th>
+        <th>Launch Time, UTC</th>
+    </thead>
+    {% for r in siege.armies %}
+    <tr id="{{r.armyId}}" data="{{r.siegearmyId}}">
+        <td>{{r.player}}</td>
+        <td>{{r.city}}</td>
+        <td nowrap>{{r.troop_type}}</td>
+        <td class="troop_count">{{r.troop_count}}</td>
+        <td>{{r.engines}}</td>
+        <td class="speed"><p>{{r.speed}}</p>
+        </td>
+        <td class="square"><p>{{r.siege_square}}</p></td>
+        <td class="orders"><p>{{r.orders}}</p></td>
+        <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
+    </tr>
+    {% endfor %}
+</table>
+    {% endfor %}
+{% endblock %}
