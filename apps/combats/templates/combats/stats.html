@@ -59,22 +59,33 @@
             </div>
     </div>
     <div>
-        <h4>Weekly kills</h4>
-
-        {% for player, value in totals.Players.items %}
-            <div class="info-cluster-1">{{ player }}
-            {% for enemy, units in value.Enemies.items %}
-            <div class="info-cluster-row">{{ enemy }}:
-                {% for x, y in units.Units.items  %}
-                    {% if x != 'Total' %}
-                    <div class="info-value1"><span class="orange">{{ y }}</span> {{ x }};</div>
-                    {% endif %}
-                    {% endfor %}
-                <div class="info-value"><b>Total: {{ value.Total }}</b></div>
-                </div>
+        <h4>Biweekly combats</h4>
+        <table id="biweekly" class="mytable table-paginated table table-bordered siegetable">
+        <thead>
+        <th>Date</th>
+        <th>Coordinates</th>
+        <th>Player</th>
+        <th>Role</th>
+        <th>Town</th>
+        <th>Unit Type</th>
+        <th>Total Units</th>
+        <th>Casualties</th>
+        </thead>
+        {% for key, combat in totals.items %}
+            {% for player in combat.Participants %}
+            <tr>
+                <td>{{ combat.Timestamp }}</td>
+                <td>{{ combat.X }}; {{ combat.Y }}</td>
+                <td class="{{ player.Role }}">{{ player.Player }}</td>
+                <td class="{{ player.Role }}">{{ player.Role }}</td>
+                <td>{{ player.Town }}</td>
+                <td>{{ player.UnitType }}</td>
+                <td>{{ player.Quantity }}</td>
+                <td>{{ player.Casualties }}</td>
+            </tr>
             {% endfor %}
-            </div>
     {% endfor %}
+    </table>
     </div>
     <h4>Monthly top 10 combats</h4>
     <table id="topTen" class="mytable1">

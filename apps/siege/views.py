@@ -274,6 +274,7 @@ def schedule(request, siege):
         armies[idx]['troop_count'] = the_army.troop_count
         orders = army.orders
         target = calculate_target_coord(army.siege_square, the_siege.x_coord, the_siege.y_coord, orders)
+        armies[idx]['target_url'] = "https://elgea.illyriad.co.uk/#/Military/Orders/%s/%s" %(target[0], target[1])
         dist = calc_dist(the_army.city.x_coord, the_army.city.y_coord, target[0], target[1])
         travel_time = calc_time(speed, dist)
         launch_time = calc_launch_time(the_siege.landing_time, travel_time, armies[idx]['time_offset'])
@@ -312,6 +313,7 @@ def player_schedule(request):
         new_army['orders'] = army.orders
         new_army['siege_square'] = army.get_siege_square_display()
         target = calculate_target_coord(army.siege_square, siege_x, siege_y, army.orders)
+        new_army['target_url'] = "https://elgea.illyriad.co.uk/#/Military/Orders/%s/%s" %(target[0], target[1])
         dist = calc_dist(the_army.city.x_coord, the_army.city.y_coord, target[0], target[1])
         travel_time = calc_time(speed, dist)
         launch_time = calc_launch_time(landing_time, travel_time, armies[idx]['time_offset'])

@@ -37,7 +37,7 @@ def stats(request):
     troop_counts['wall'] = q3['wall_engines__sum']
 
     #get last week's total kills
-    req1 = requests.get(COMBATS_PATH+'/combats/totals/300')
+    req1 = requests.get(COMBATS_PATH+'/combats/biweekly/300')
     totals = req1.json()
     print "#########RESPONSE 1: %s ##########" % totals
 

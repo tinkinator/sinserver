@@ -1,5 +1,6 @@
 $(document).ready(function() {
     var topTenTable = $('#topTen').DataTable({"pageLength": 5});
+    var combatsTable = $('#biweekly').DataTable({"pageLength": 10});
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     $('#topTen_wrapper > .row:nth-child(odd) > div').removeClass('col-sm-6').addClass('col-sm-3');
     // var plStatsEl = ;

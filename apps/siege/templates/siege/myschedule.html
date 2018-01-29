@@ -29,7 +29,7 @@
         <td class="speed"><p>{{r.speed}}</p>
         </td>
         <td class="square"><p>{{r.siege_square}}</p></td>
-        <td class="orders"><p>{{r.orders}}</p></td>
+        <td class="orders"><p><a href="{{r.target_url}}" target="_blank">{{r.orders}}</a></p></td>
         <td class="timer" data-toggle="tooltip" data-placement="top">{{r.launch_time}}</td>
     </tr>
     {% endfor %}
